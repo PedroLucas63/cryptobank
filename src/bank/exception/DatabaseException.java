@@ -1,9 +1,9 @@
+package bank.exception;
+
 /**
  * Custom exception class for database related issues. This class extends the
  * built-in Exception class.
  */
-package bank.exception;
-
 public class DatabaseException extends Exception {
    /**
     * Constructs a new DatabaseException with the specified detail message.
