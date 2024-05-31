@@ -12,8 +12,7 @@ public class MainView implements View {
     * Private constructor to prevent instantiation from outside the class. This
     * ensures that the singleton pattern is followed.
     */
-   private MainView() {
-   }
+   private MainView() {}
 
    /**
     * Provides the singleton instance of the MainView.
@@ -24,6 +23,7 @@ public class MainView implements View {
       if (mainViewInstance == null) {
          mainViewInstance = new MainView();
       }
+
       return mainViewInstance;
    }
 

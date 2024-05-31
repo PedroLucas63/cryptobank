@@ -6,7 +6,6 @@ package bank.view;
  * handling user interactions.
  */
 public interface View {
-
    /**
     * Method to start the view. This method will continue running the view until
     * the exit condition is met.

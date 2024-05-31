@@ -17,7 +17,6 @@ import bank.exception.DAOException;
  *            class.
  */
 public interface DAO<T extends Entity> {
-
    /**
     * Saves a new entity to the database.
     *
