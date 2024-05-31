@@ -93,8 +93,9 @@ O sistema deve permitir que usuários visualizem o histórico de transações de
 O sistema deve permitir o cadastro e a gestão de funcionários do banco.
 
 **Funcionalidades:**
-- RF022: O sistema deve permitir que funcionários com permissão possam cadastrar novos funcionários.
-- RF023: O sistema deve permitir o cadastro de funcionários com ou sem conta no sistema.
+- RF022: O sistema deve permitir que funcionários com permissão possam cadastrar novos cargos.
+- RF023: O sistema deve permitir que funcionários com permissão possam cadastrar novos funcionários.
+- RF024: O sistema deve permitir o cadastro de funcionários com ou sem conta no sistema.
 
 ##### 9. Cadastro e Atualização de Moedas
 
@@ -102,9 +103,9 @@ O sistema deve permitir o cadastro e a gestão de funcionários do banco.
 O sistema deve permitir o cadastro e a atualização de moedas fiduciárias e criptomoedas.
 
 **Funcionalidades:**
-- RF024: O sistema deve permitir que funcionários com permissão possam cadastrar novas moedas fiduciárias.
-- RF025: O sistema deve permitir que funcionários com permissão possam cadastrar novas criptomoedas.
-- RF026: O sistema deve permitir que funcionários com permissão atualizem os valores das moedas fiduciárias.
+- RF025: O sistema deve permitir que funcionários com permissão possam cadastrar novas moedas fiduciárias.
+- RF026: O sistema deve permitir que funcionários com permissão possam cadastrar novas criptomoedas.
+- RF027: O sistema deve permitir que funcionários com permissão atualizem os valores das moedas fiduciárias.
 
 ---
 
