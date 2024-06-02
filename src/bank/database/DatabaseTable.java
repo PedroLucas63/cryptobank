@@ -38,7 +38,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     * @throws DatabaseException if there is an error during the find operation.
     */
    @Override
-   public Optional<T> findById(int id) throws DatabaseException {
+   public Optional<T> findById(Integer id) throws DatabaseException {
       // TODO: Auto-generated method stub
       return Optional.empty();
    }
@@ -65,7 +65,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void update(int id, T entity) throws DatabaseException {
+   public void update(Integer id, T entity) throws DatabaseException {
       // TODO: Auto-generated method stub
    }
 
@@ -77,7 +77,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void delete(int id) throws DatabaseException {
+   public void delete(Integer id) throws DatabaseException {
       // TODO: Auto-generated method stub
    }
 }

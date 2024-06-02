@@ -63,7 +63,7 @@ public class Database {
     *         no entity is found.
     * @throws DatabaseException if there is an error during the find operation.
     */
-   public <T extends Entity> Optional<T> findById(Class<T> clazz, int id)
+   public <T extends Entity> Optional<T> findById(Class<T> clazz, Integer id)
          throws DatabaseException {
       // TODO: Implement the method to find the entity by ID.
       return Optional.empty();
@@ -94,7 +94,7 @@ public class Database {
     * @throws DatabaseException if there is an error during the update
     *                           operation.
     */
-   public <T extends Entity> void update(Class<T> clazz, int id, T entity)
+   public <T extends Entity> void update(Class<T> clazz, Integer id, T entity)
          throws DatabaseException {
       // TODO: Implement the method to update the entity.
    }
@@ -108,7 +108,7 @@ public class Database {
     * @throws DatabaseException if there is an error during the delete
     *                           operation.
     */
-   public <T extends Entity> void delete(Class<T> clazz, int id)
+   public <T extends Entity> void delete(Class<T> clazz, Integer id)
          throws DatabaseException {
       // TODO: Implement the method to delete the entity.
    }
