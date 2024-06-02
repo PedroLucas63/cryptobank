@@ -10,13 +10,24 @@ import bank.entity.Role;
 import bank.exception.DAOException;
 import bank.exception.DatabaseException;
 
+/**
+ * Role Data Access Object (DAO) class. This class provides methods to interact
+ * with the Role entity in the database.
+ */
 public class RoleDAO implements DAO<Role> {
+   /**
+    * Singleton instance of the Database class.
+    */
    Database database = Database.getInstance();
 
+   /**
+    * Saves a Role entity in the database.
+    *
+    * @param entity The Role entity to be saved.
+    * @throws DAOException If an error occurs while saving the entity.
+    */
    @Override
    public void save(Role entity) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          database.save(Role.class, entity);
       } catch (DatabaseException e) {
@@ -24,10 +35,16 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Finds a Role entity by its ID in the database.
+    *
+    * @param id The ID of the Role entity to be found.
+    * @return An Optional containing the found Role entity, or an empty Optional
+    *         if not found.
+    * @throws DAOException If an error occurs while finding the entity.
+    */
    @Override
    public Optional<Role> findById(Integer id) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          return database.findById(Role.class, id);
       } catch (DatabaseException e) {
@@ -35,10 +52,14 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Retrieves all Role entities from the database.
+    *
+    * @return A List of all Role entities.
+    * @throws DAOException If an error occurs while retrieving the entities.
+    */
    @Override
    public List<Role> findAll() throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          return database.findAll(Role.class);
       } catch (DatabaseException e) {
@@ -46,10 +67,15 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Retrieves all Role entities from the database that satisfy a given filter.
+    *
+    * @param filter The filter to be applied.
+    * @return A List of Role entities that satisfy the filter.
+    * @throws DAOException If an error occurs while retrieving the entities.
+    */
    @Override
    public List<Role> findAll(Predicate<Role> filter) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          return database.findAll(Role.class);
       } catch (DatabaseException e) {
@@ -57,10 +83,16 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Retrieves all Role entities from the database and sorts them according to
+    * a given comparator.
+    *
+    * @param comparator The comparator to be applied.
+    * @return A List of Role entities sorted according to the comparator.
+    * @throws DAOException If an error occurs while retrieving the entities.
+    */
    @Override
    public List<Role> findAll(Comparator<Role> comparator) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          return database.findAll(Role.class);
       } catch (DatabaseException e) {
@@ -68,10 +100,15 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Updates a Role entity in the database.
+    *
+    * @param id     The ID of the Role entity to be updated.
+    * @param entity The updated Role entity.
+    * @throws DAOException If an error occurs while updating the entity.
+    */
    @Override
    public void update(Integer id, Role entity) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          database.update(Role.class, id, entity);
       } catch (DatabaseException e) {
@@ -79,10 +116,14 @@ public class RoleDAO implements DAO<Role> {
       }
    }
 
+   /**
+    * Deletes a Role entity from the database by its ID.
+    *
+    * @param id The ID of the Role entity to be deleted.
+    * @throws DAOException If an error occurs while deleting the entity.
+    */
    @Override
    public void delete(Integer id) throws DAOException {
-      // TODO: Auto-generated method stub
-
       try {
          database.delete(Role.class, id);
       } catch (DatabaseException e) {
