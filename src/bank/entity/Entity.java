@@ -4,15 +4,15 @@ package bank.entity;
  * This class represents a basic entity with an id. It provides getter and
  * setter methods for the id.
  */
-public class Entity {
-   private int id; /// The unique identifier of the entity.
+public abstract class Entity {
+   private Integer id; /// The unique identifier of the entity.
 
    /**
     * Returns the id of the entity.
     *
     * @return the id of the entity
     */
-   public int getId() {
+   public Integer getId() {
       return id;
    }
 
@@ -21,7 +21,7 @@ public class Entity {
     *
     * @param id the new id of the entity
     */
-   public void setId(int id) {
+   public void setId(Integer id) {
       this.id = id;
    }
 

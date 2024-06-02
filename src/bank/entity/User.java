@@ -9,7 +9,7 @@ public class User extends Entity {
    protected String password;
    protected Integer age;
    protected String email;
-   List<Account> accounts = new ArrayList<>();
+   protected List<Account> accounts = new ArrayList<>();
 
    public User(String name, String document, String password, Integer age,
          String email) {

@@ -1,15 +1,13 @@
 package bank.entity;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public abstract class Account extends Entity {
-   Map<Currency, Double> balances = new HashMap<>();
-   List<Transaction> transactions = new ArrayList<>();
-   List<Transaction> pendingTransactions = new ArrayList<>();
+   protected Map<Currency, Double> balances = new HashMap<>();
+   protected List<Transaction> transactions = new ArrayList<>();
 
    public boolean debit(Currency currency, Double amount) {
       if (amount < 0) {
@@ -41,31 +39,11 @@ public abstract class Account extends Entity {
       return true;
    }
 
-   public void updatePendencies() {
-      for (Transaction tx : pendingTransactions) {
-         if (tx.getTimestamp().isBefore(LocalDateTime.now())) {
-            if (tx.getAmount() > 0) {
-               credit(tx.getCurrency(), tx.getAmount());
-            }
-         }
-      }
-
-      pendingTransactions.clear();
-   }
-
    public Map<Currency, Double> getBalances() {
       return balances;
    }
 
    public List<Transaction> getTransactions() {
       return transactions;
-   }
-
-   public List<Transaction> getPendingTransactions() {
-      return pendingTransactions;
-   }
-
-   public void addPendingTransaction(Transaction transaction) {
-      pendingTransactions.add(transaction);
    }
 }
