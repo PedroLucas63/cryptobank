@@ -85,4 +85,10 @@ public class User extends Entity {
 
       return false;
    }
+
+   /* PARA TESTAR */
+   @Override
+   public String toString() {
+      return document;
+   }
 }
