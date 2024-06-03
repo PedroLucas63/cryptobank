@@ -18,7 +18,7 @@ public class UserDAO implements DAO<User> {
    /**
     * Singleton instance of the Database class.
     */
-   Database database = Database.getInstance();
+   private Database database = Database.getInstance();
 
    /**
     * Saves a User entity in the database.

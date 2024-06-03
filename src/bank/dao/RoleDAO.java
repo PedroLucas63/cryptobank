@@ -18,7 +18,7 @@ public class RoleDAO implements DAO<Role> {
    /**
     * Singleton instance of the Database class.
     */
-   Database database = Database.getInstance();
+   private Database database = Database.getInstance();
 
    /**
     * Saves a Role entity in the database.

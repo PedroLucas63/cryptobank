@@ -18,7 +18,7 @@ public class CurrencyDAO implements DAO<Currency> {
    /**
     * Singleton instance of the Database class.
     */
-   Database database = Database.getInstance();
+   private Database database = Database.getInstance();
 
    /**
     * Saves a Currency entity in the database.
