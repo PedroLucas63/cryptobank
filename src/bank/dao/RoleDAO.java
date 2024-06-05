@@ -31,7 +31,7 @@ public class RoleDAO implements DAO<Role> {
       try {
          database.save(Role.class, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na inserção do cargo.", e);
       }
    }
 
@@ -48,7 +48,7 @@ public class RoleDAO implements DAO<Role> {
       try {
          return database.findById(Role.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca pelo cargo.", e);
       }
    }
 
@@ -63,7 +63,7 @@ public class RoleDAO implements DAO<Role> {
       try {
          return database.findAll(Role.class);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos cargos.", e);
       }
    }
 
@@ -77,9 +77,10 @@ public class RoleDAO implements DAO<Role> {
    @Override
    public List<Role> findAll(Predicate<Role> filter) throws DAOException {
       try {
-         return database.findAll(Role.class);
+         List<Role> list = database.findAll(Role.class);
+         return list.stream().filter(filter).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos cargos.", e);
       }
    }
 
@@ -94,9 +95,10 @@ public class RoleDAO implements DAO<Role> {
    @Override
    public List<Role> findAll(Comparator<Role> comparator) throws DAOException {
       try {
-         return database.findAll(Role.class);
+         List<Role> list = database.findAll(Role.class);
+         return list.stream().sorted(comparator).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos cargos.", e);
       }
    }
 
@@ -112,7 +114,7 @@ public class RoleDAO implements DAO<Role> {
       try {
          database.update(Role.class, id, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na atualização do cargo.", e);
       }
    }
 
@@ -127,7 +129,7 @@ public class RoleDAO implements DAO<Role> {
       try {
          database.delete(Role.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na remoção do cargo.", e);
       }
    }
 }

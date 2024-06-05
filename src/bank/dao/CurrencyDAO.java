@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 
 import bank.database.Database;
 import bank.entity.Currency;
+import bank.entity.User;
 import bank.exception.DAOException;
 import bank.exception.DatabaseException;
 
@@ -31,7 +32,7 @@ public class CurrencyDAO implements DAO<Currency> {
       try {
          database.save(Currency.class, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na inserção da moeda.", e);
       }
    }
 
@@ -48,7 +49,7 @@ public class CurrencyDAO implements DAO<Currency> {
       try {
          return database.findById(Currency.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca pela moeda.", e);
       }
    }
 
@@ -63,7 +64,7 @@ public class CurrencyDAO implements DAO<Currency> {
       try {
          return database.findAll(Currency.class);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca das moedas.", e);
       }
    }
 
@@ -78,9 +79,10 @@ public class CurrencyDAO implements DAO<Currency> {
    public List<Currency> findAll(Predicate<Currency> filter)
          throws DAOException {
       try {
-         return database.findAll(Currency.class);
+         List<Currency> list = database.findAll(Currency.class);
+         return list.stream().filter(filter).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca das moedas.", e);
       }
    }
 
@@ -96,9 +98,10 @@ public class CurrencyDAO implements DAO<Currency> {
    public List<Currency> findAll(Comparator<Currency> comparator)
          throws DAOException {
       try {
-         return database.findAll(Currency.class);
+         List<Currency> list = database.findAll(Currency.class);
+         return list.stream().sorted(comparator).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca das moedas.", e);
       }
    }
 
@@ -114,7 +117,7 @@ public class CurrencyDAO implements DAO<Currency> {
       try {
          database.update(Currency.class, id, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na atualização da moeda.", e);
       }
    }
 
@@ -129,7 +132,7 @@ public class CurrencyDAO implements DAO<Currency> {
       try {
          database.delete(Currency.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na remoção da moeda.", e);
       }
    }
 }

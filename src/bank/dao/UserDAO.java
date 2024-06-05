@@ -31,7 +31,7 @@ public class UserDAO implements DAO<User> {
       try {
          database.save(User.class, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na inserção do usuário.", e);
       }
    }
 
@@ -48,7 +48,7 @@ public class UserDAO implements DAO<User> {
       try {
          return database.findById(User.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca pelo usuário.", e);
       }
    }
 
@@ -63,7 +63,7 @@ public class UserDAO implements DAO<User> {
       try {
          return database.findAll(User.class);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos usuários.", e);
       }
    }
 
@@ -77,9 +77,10 @@ public class UserDAO implements DAO<User> {
    @Override
    public List<User> findAll(Predicate<User> filter) throws DAOException {
       try {
-         return database.findAll(User.class);
+         List<User> list = database.findAll(User.class);
+         return list.stream().filter(filter).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos usuários.", e);
       }
    }
 
@@ -94,9 +95,10 @@ public class UserDAO implements DAO<User> {
    @Override
    public List<User> findAll(Comparator<User> comparator) throws DAOException {
       try {
-         return database.findAll(User.class);
+         List<User> list = database.findAll(User.class);
+         return list.stream().sorted(comparator).toList();
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na busca dos usuários.", e);
       }
    }
 
@@ -112,7 +114,7 @@ public class UserDAO implements DAO<User> {
       try {
          database.update(User.class, id, entity);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na atualização do usuário.", e);
       }
    }
 
@@ -127,7 +129,7 @@ public class UserDAO implements DAO<User> {
       try {
          database.delete(User.class, id);
       } catch (DatabaseException e) {
-         throw new DAOException("", e);
+         throw new DAOException("Erro na remoção do usuário.", e);
       }
    }
 }
