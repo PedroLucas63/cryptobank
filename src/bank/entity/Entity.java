@@ -5,7 +5,7 @@ package bank.entity;
  * setter methods for the id.
  */
 public abstract class Entity {
-   private Integer id; /// The unique identifier of the entity.
+   protected Integer id; /// The unique identifier of the entity.
 
    /**
     * Returns the id of the entity.
