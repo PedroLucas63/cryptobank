@@ -6,27 +6,6 @@ package bank.view;
  * input and update the view.
  */
 public class MainView implements View {
-   private static MainView mainViewInstance = null;
-
-   /**
-    * Private constructor to prevent instantiation from outside the class. This
-    * ensures that the singleton pattern is followed.
-    */
-   private MainView() {}
-
-   /**
-    * Provides the singleton instance of the MainView.
-    * 
-    * @return the singleton instance of the MainView.
-    */
-   public static MainView getInstance() {
-      if (mainViewInstance == null) {
-         mainViewInstance = new MainView();
-      }
-
-      return mainViewInstance;
-   }
-
    /**
     * Process user input or perform necessary actions. This method is currently
     * not implemented and serves as a placeholder for future functionality.
