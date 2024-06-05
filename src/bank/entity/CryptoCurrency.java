@@ -3,22 +3,26 @@ package bank.entity;
 public class CryptoCurrency extends Currency {
    private Double originalValue;
    private Integer maxSupply;
-   private Integer inUseSupply;
+   private Integer inUseSupply = 0;
+   private Double growthRate;
 
-   public CryptoCurrency(String name, Double value, Integer maxSupply,
-         Integer inUseSupply) {
-      super(name, value);
+   public CryptoCurrency(String name, String symbol, Double value,
+         Integer maxSupply) {
+      super(name, symbol, value);
       this.originalValue = value;
       this.maxSupply = maxSupply;
-      this.inUseSupply = inUseSupply;
+      this.growthRate = Math.pow(Math.cbrt(maxSupply.doubleValue()), 2) + 1;
    }
 
    private void updateValue() {
-      if (inUseSupply == 0) {
+      if (this.inUseSupply == 0) {
          this.value = this.originalValue;
+      } else if (this.inUseSupply == this.maxSupply) {
+         this.value = Double.POSITIVE_INFINITY;
       } else {
-         double multiply = 1 / ((maxSupply - inUseSupply) / maxSupply) * 4;
-         this.value = this.originalValue * multiply;
+         this.value = this.originalValue
+               * (this.growthRate * ((double) this.inUseSupply
+                     / (this.maxSupply - this.inUseSupply)));
       }
    }
 
@@ -60,4 +64,11 @@ public class CryptoCurrency extends Currency {
       this.inUseSupply = inUseSupply;
    }
 
+   public Double getOriginalValue() {
+      return originalValue;
+   }
+
+   public Double getGrowthRate() {
+      return growthRate;
+   }
 }

@@ -2,10 +2,12 @@ package bank.entity;
 
 public abstract class Currency extends Entity {
    protected String name;
+   protected String symbol;
    protected Double value;
 
-   public Currency(String name, Double value) {
+   public Currency(String name, String symbol, Double value) {
       this.name = name;
+      this.symbol = symbol;
       this.value = value;
    }
 
@@ -15,6 +17,14 @@ public abstract class Currency extends Entity {
 
    public void setName(String name) {
       this.name = name;
+   }
+
+   public String getSymbol() {
+      return symbol;
+   }
+
+   public void setSymbol(String symbol) {
+      this.symbol = symbol;
    }
 
    public Double getValue() {

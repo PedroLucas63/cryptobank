@@ -13,10 +13,10 @@ public class CryptoAccount extends Account {
             if (tx.getAmount() > 0) {
                credit(tx.getCurrency(), tx.getAmount());
             }
+
+            pendingTransactions.remove(tx);
          }
       }
-
-      pendingTransactions.clear();
    }
 
    public List<Transaction> getPendingTransactions() {
