@@ -81,8 +81,8 @@ Os diagramas desses pacotes serão incluídos em versões futuras do documento a
 
 ## Documentos de Requisitos
 
-- [Requisitos Funcionais](requeriments/functional.md)
-- [Requisitos Não Funcionais](requeriments/non-functional.md)
+- [Requisitos Funcionais](requeriments/functional.pdf)
+- [Requisitos Não Funcionais](requeriments/non-functional.pdf)
 
 ## Conclusão
 
