@@ -2,34 +2,34 @@ package bank.entity;
 
 public class CryptoCurrency extends Currency {
    private Double originalValue;
-   private Integer maxSupply;
-   private Integer inUseSupply = 0;
+   private Integer supplyMaximum;
+   private Integer supplyInUse = 0;
    private Double growthRate;
 
    public CryptoCurrency(String name, String symbol, Double value,
-         Integer maxSupply) {
+         Integer supplyMaximum) {
       super(name, symbol, value);
       this.originalValue = value;
-      this.maxSupply = maxSupply;
-      this.growthRate = Math.pow(Math.cbrt(maxSupply.doubleValue()), 2) + 1;
+      this.supplyMaximum = supplyMaximum;
+      this.growthRate = Math.pow(Math.cbrt(supplyMaximum.doubleValue()), 2) + 1;
    }
 
-   private void updateValue() {
-      if (this.inUseSupply == 0) {
+   private void autoUpdateValue() {
+      if (this.supplyInUse == 0) {
          this.value = this.originalValue;
-      } else if (this.inUseSupply == this.maxSupply) {
+      } else if (this.supplyInUse == this.supplyMaximum) {
          this.value = Double.POSITIVE_INFINITY;
       } else {
          this.value = this.originalValue
-               * (this.growthRate * ((double) this.inUseSupply
-                     / (this.maxSupply - this.inUseSupply)));
+               * (this.growthRate * ((double) this.supplyInUse
+                     / (this.supplyMaximum - this.supplyInUse)));
       }
    }
 
    public boolean buy(Integer amount) {
-      if (inUseSupply + amount <= maxSupply) {
-         inUseSupply += amount;
-         updateValue();
+      if (supplyInUse + amount <= supplyMaximum) {
+         supplyInUse += amount;
+         autoUpdateValue();
 
          return true;
       }
@@ -38,9 +38,9 @@ public class CryptoCurrency extends Currency {
    }
 
    public boolean sell(Integer amount) {
-      if (inUseSupply - amount >= 0) {
-         inUseSupply -= amount;
-         updateValue();
+      if (supplyInUse - amount >= 0) {
+         supplyInUse -= amount;
+         autoUpdateValue();
 
          return true;
       }
@@ -48,20 +48,20 @@ public class CryptoCurrency extends Currency {
       return false;
    }
 
-   public Integer getMaxSupply() {
-      return maxSupply;
+   public Integer getSupplyMaximum() {
+      return supplyMaximum;
    }
 
-   public void setMaxSupply(Integer maxSupply) {
-      this.maxSupply = maxSupply;
+   public void setSupplyMaximum(Integer supplyMaximum) {
+      this.supplyMaximum = supplyMaximum;
    }
 
-   public Integer getInUseSupply() {
-      return inUseSupply;
+   public Integer getSupplyInUse() {
+      return supplyInUse;
    }
 
-   public void setInUseSupply(Integer inUseSupply) {
-      this.inUseSupply = inUseSupply;
+   public void setSupplyInUse(Integer supplyInUse) {
+      this.supplyInUse = supplyInUse;
    }
 
    public Double getOriginalValue() {

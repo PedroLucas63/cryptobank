@@ -6,7 +6,6 @@ package bank.exception;
  * simple error messages and error messages with a cause.
  */
 public class DAOException extends Exception {
-
    /**
     * Constructs a new DAOException with the specified detail message.
     *

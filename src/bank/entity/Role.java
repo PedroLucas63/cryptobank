@@ -4,11 +4,14 @@ public class Role extends Entity {
    private String title;
    private Boolean updateEmployees;
    private Boolean updateRoles;
+   private Boolean updateCurrencies;
 
-   public Role(String title, Boolean updateEmployees, Boolean updateRoles) {
+   public Role(String title, Boolean updateEmployees, Boolean updateRoles,
+         Boolean updateCurrencies) {
       this.title = title;
       this.updateEmployees = updateEmployees;
       this.updateRoles = updateRoles;
+      this.updateCurrencies = updateCurrencies;
    }
 
    public String getTitle() {
@@ -33,6 +36,14 @@ public class Role extends Entity {
 
    public void setUpdateRoles(Boolean updateRoles) {
       this.updateRoles = updateRoles;
+   }
+
+   public Boolean getUpdateCurrencies() {
+      return updateCurrencies;
+   }
+
+   public void setUpdateCurrencies(Boolean updateCurrencies) {
+      this.updateCurrencies = updateCurrencies;
    }
 
    @Override
