@@ -11,11 +11,11 @@ public interface View {
     * the exit condition is met.
     */
    default void startView() {
-      while (!exit()) {
+      do {
          process(); // Process user input or perform necessary actions.
          update(); // Update the view based on any changes.
          view(); // Render the view to display data to the user.
-      }
+      } while (!exit());
    }
 
    /**
@@ -23,7 +23,7 @@ public interface View {
     * 
     * @return true if the view should exit, false otherwise.
     */
-   boolean exit();
+   Boolean exit();
 
    /**
     * Method to process user input or perform necessary actions. This method is

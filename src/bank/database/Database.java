@@ -55,12 +55,12 @@ public class Database {
     * @param entity the entity to be saved.
     * @throws DatabaseException if there is an error during the save operation.
     */
+   @SuppressWarnings("unchecked")
    public <T extends Entity> void save(Class<T> clazz, T entity)
          throws DatabaseException {
       checkClass(clazz);
 
       try {
-         @SuppressWarnings("unchecked")
          DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
          table.save(entity);
       } catch (DatabaseException e) {
@@ -119,12 +119,12 @@ public class Database {
     * @throws DatabaseException if there is an error during the update
     *                           operation.
     */
+   @SuppressWarnings("unchecked")
    public <T extends Entity> void update(Class<T> clazz, Integer id, T entity)
          throws DatabaseException {
       checkClass(clazz);
 
       try {
-         @SuppressWarnings("unchecked")
          DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
          table.update(id, entity);
       } catch (DatabaseException e) {

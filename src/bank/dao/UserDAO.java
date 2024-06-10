@@ -15,9 +15,6 @@ import bank.exception.DatabaseException;
  * database. Implements the DAO interface for User entities.
  */
 public class UserDAO implements DAO<User> {
-   /**
-    * Singleton instance of the Database class.
-    */
    private Database database = Database.getInstance();
 
    /**
@@ -43,10 +40,11 @@ public class UserDAO implements DAO<User> {
     *         if not found.
     * @throws DAOException If an error occurs while finding the entity.
     */
+   @SuppressWarnings("unchecked")
    @Override
    public Optional<User> findById(Integer id) throws DAOException {
       try {
-         return database.findById(User.class, id);
+         return (Optional<User>) database.findById(User.class, id);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca pelo usuário.", e);
       }
@@ -58,10 +56,11 @@ public class UserDAO implements DAO<User> {
     * @return A List of all User entities.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
+   @SuppressWarnings("unchecked")
    @Override
    public List<User> findAll() throws DAOException {
       try {
-         return database.findAll(User.class);
+         return (List<User>) database.findAll(User.class);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos usuários.", e);
       }
@@ -74,10 +73,11 @@ public class UserDAO implements DAO<User> {
     * @return A List of User entities that satisfy the filter.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
+   @SuppressWarnings("unchecked")
    @Override
    public List<User> findAll(Predicate<User> filter) throws DAOException {
       try {
-         List<User> list = database.findAll(User.class);
+         List<User> list = (List<User>) database.findAll(User.class);
          return list.stream().filter(filter).toList();
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos usuários.", e);
@@ -92,10 +92,11 @@ public class UserDAO implements DAO<User> {
     * @return A List of User entities sorted according to the comparator.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
+   @SuppressWarnings("unchecked")
    @Override
    public List<User> findAll(Comparator<User> comparator) throws DAOException {
       try {
-         List<User> list = database.findAll(User.class);
+         List<User> list = (List<User>) database.findAll(User.class);
          return list.stream().sorted(comparator).toList();
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos usuários.", e);
