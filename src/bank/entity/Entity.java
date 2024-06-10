@@ -41,10 +41,4 @@ public abstract class Entity {
 
       return false;
    }
-   
-   /* PARA FINS DE TESTE */
-   @Override
-   public String toString() {
-      return Integer.toString(this.id);
-   }
 }

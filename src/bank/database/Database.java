@@ -4,31 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import bank.entity.Currency;
 import bank.entity.Entity;
-import bank.entity.Role;
-import bank.entity.User;
 import bank.exception.DatabaseException;
 
 /**
  * Singleton class representing the database, which contains multiple tables for
  * different entities.
  */
-public class Database{
-   /// Map of all entity tables.
+public class Database {
    private Map<Class<? extends Entity>, DatabaseTableI<? extends Entity>> tables = new HashMap<>();
-
-   /// Singleton instance of the database.
    private static Database databaseInstance = null;
 
    /**
     * Private constructor to prevent instantiation from outside the class. This
     * ensures that the singleton pattern is followed.
     */
-   private Database() {
-
-   }
+   private Database() {}
 
    /**
     * Provides the singleton instance of the database.
@@ -44,6 +35,19 @@ public class Database{
    }
 
    /**
+    * Checks if the database contains a table for the specified entity class. If
+    * not, it creates a new table for the entity class.
+    *
+    * @param <T>   the type of the entity. It must extend the Entity class.
+    * @param clazz the class of the entity type.
+    */
+   private <T extends Entity> void checkClass(Class<T> clazz) {
+      if (!tables.containsKey(clazz)) {
+         tables.put(clazz, new DatabaseTable<T>());
+      }
+   }
+
+   /**
     * Saves a new entity to the appropriate table in the database.
     * 
     * @param <T>    the type of the entity.
@@ -51,18 +55,16 @@ public class Database{
     * @param entity the entity to be saved.
     * @throws DatabaseException if there is an error during the save operation.
     */
-   public <T extends Entity> void save(Class<T> clazz, T entity) throws DatabaseException {
-      try{
-         if(!tables.containsKey(clazz)){
-            tables.put(clazz, new DatabaseTable<T>());
-         }
-         /*Solução temporária, pois não consegui resolver usando tables.get(clazz).save(entity); */
+   public <T extends Entity> void save(Class<T> clazz, T entity)
+         throws DatabaseException {
+      checkClass(clazz);
+
+      try {
          @SuppressWarnings("unchecked")
          DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
          table.save(entity);
-         tables.put(clazz, table);
-      } catch (Exception e){
-         throw new DatabaseException("Não foi possível salvar essa Table no DataBase.", e);
+      } catch (DatabaseException e) {
+         throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
    }
 
@@ -76,16 +78,14 @@ public class Database{
     *         no entity is found.
     * @throws DatabaseException if there is an error during the find operation.
     */
-<<<<<<< HEAD
-   public <T extends Entity> Optional<T> findById(Class<T> clazz, Integer id)
-=======
-   public <T extends Entity> Optional<? extends Entity> findById(Class<T> clazz, int id)
->>>>>>> branch01
-         throws DatabaseException {
+   public <T extends Entity> Optional<? extends Entity> findById(Class<T> clazz,
+         Integer id) throws DatabaseException {
+      checkClass(clazz);
+
       try {
          return tables.get(clazz).findById(id);
-      } catch (Exception e) {
-         throw new DatabaseException("Não foi possível encontrar uma entidade com esse ID no DataBase.", e);
+      } catch (DatabaseException e) {
+         throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
    }
 
@@ -100,10 +100,12 @@ public class Database{
     */
    public <T extends Entity> List<? extends Entity> findAll(Class<T> clazz)
          throws DatabaseException {
+      checkClass(clazz);
+
       try {
          return tables.get(clazz).findAll();
-      } catch (Exception e) {
-         throw new DatabaseException("Não foi possível encontrar uma Table dessa entidade DataBase.", e);
+      } catch (DatabaseException e) {
+         throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
    }
 
@@ -119,14 +121,14 @@ public class Database{
     */
    public <T extends Entity> void update(Class<T> clazz, Integer id, T entity)
          throws DatabaseException {
+      checkClass(clazz);
+
       try {
-         /*Solução temporária, pois um problema semelhante ao put ocorreu */
          @SuppressWarnings("unchecked")
-         DatabaseTable<T> temp = (DatabaseTable<T>)tables.get(clazz);
-         temp.update(id, entity);
-         tables.put(clazz, temp);
-      } catch (Exception e) {
-         throw new DatabaseException("Não foi possível atualizar a entidade em questão.", e);
+         DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
+         table.update(id, entity);
+      } catch (DatabaseException e) {
+         throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
    }
 
@@ -141,27 +143,12 @@ public class Database{
     */
    public <T extends Entity> void delete(Class<T> clazz, Integer id)
          throws DatabaseException {
-         try {
-            if(!tables.containsKey(clazz)){
-               tables.put(clazz, new DatabaseTable<T>());
-            }
-            tables.get(clazz).delete(id);
-         } catch (Exception e) {
-         throw new DatabaseException("Não foi possível deletar a entidade em questão.", e);
-         }
-   }
+      checkClass(clazz);
 
-   /* PARA FINS DE TESTE */
-   public static void main(String[] args) {
-      Database teste = Database.getInstance();
-      DatabaseTable<User> testeT = new DatabaseTable<>();
-      User testeU = new User("Jorge", "412.594.754-68", "senha123", 80, "teste@teste.com");
       try {
-         testeT.save(testeU);
-         teste.save(User.class, testeU);
-         System.out.println(teste.findById(User.class, 0));
-      } catch (Exception e) {
-         System.out.println(e);
+         tables.get(clazz).delete(id);
+      } catch (DatabaseException e) {
+         throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
    }
 }

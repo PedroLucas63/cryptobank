@@ -1,11 +1,14 @@
 package bank.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import bank.entity.CryptoCurrency;
 import bank.entity.Entity;
 import bank.exception.DatabaseException;
+import bank.exception.EntityNotFoundException;
+import bank.exception.UniqueKeyException;
 
 /**
  * A generic class representing a database table that handles entities of type
@@ -16,8 +19,7 @@ import bank.exception.DatabaseException;
  *            class.
  */
 public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
-   private List<T> entities = new ArrayList<>(); /// List of entities.
-   private int actualId = 0;
+   private Map<Integer, T> entities = new HashMap<>();
 
    /**
     * Saves a new entity to the database table.
@@ -26,14 +28,19 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     * @throws DatabaseException if there is an error during the save operation.
     */
    @Override
-   public void save(T entity) throws DatabaseException { 
-      try{
-         entities.add(entity);
-         entity.setId(actualId);
-         actualId++;
-      } 
-      catch (Exception e) {
-         throw new DatabaseException("Não foi possível adicionar o elemento ao DatabaseTable.", e);
+   public void save(T entity) throws DatabaseException {
+      try {
+         entity.setId(entity.hashCode());
+
+         if (entities.containsKey(entity.getId())) {
+            throw new UniqueKeyException("A chave única da entidade "
+                  + entity.getId() + " já está em uso.");
+         }
+
+         entities.put(entity.getId(), entity);
+      } catch (Exception e) {
+         throw new DatabaseException(
+               "Não foi possível adicionar o elemento ao DatabaseTable.", e);
       }
    }
 
@@ -46,14 +53,12 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     * @throws DatabaseException if there is an error during the find operation.
     */
    @Override
-   public Optional<T> findById(int id) throws DatabaseException {
-        try {
-            return entities.stream()
-                .filter(entity -> entity.getId() == id)
-                .findFirst();
-        } catch (Exception e) {
-            throw new DatabaseException("Erro ao buscar a entidade com ID: " + id, e);
-        }
+   public Optional<T> findById(Integer id) throws DatabaseException {
+      try {
+         return Optional.of(entities.get(id));
+      } catch (Exception e) {
+         throw new DatabaseException("Erro ao buscar a entidade " + id, e);
+      }
    }
 
    /**
@@ -65,14 +70,12 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     */
    @Override
    public List<T> findAll() throws DatabaseException {
-        try {
-            if (entities == null) {
-                throw new DatabaseException("A lista de entidades é nula.");
-            }
-            return new ArrayList<>(entities); 
-        } catch (Exception e) {
-            throw new DatabaseException("Erro ao recuperar todas as entidades.", e);
-        }
+      try {
+         return new ArrayList<>(entities.values());
+      } catch (Exception e) {
+         throw new DatabaseException("Erro ao recuperar todas as entidades.",
+               e);
+      }
    }
 
    /**
@@ -84,11 +87,19 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void update(int id, T entity) throws DatabaseException {
+   public void update(Integer id, T entity) throws DatabaseException {
       try {
-         entities.set(id, entity);
+         if (!entities.containsKey(id)) {
+            throw new EntityNotFoundException(
+                  "A entidade " + id + " não existe.");
+         } else if (!entities.get(id).equals(entity)) {
+            throw new UniqueKeyException(
+                  "A chave única da entidade " + id + " já está em uso.");
+         }
+
+         entities.replace(id, entity);
       } catch (Exception e) {
-         throw new DatabaseException("Erro ao atualizar a entidade com ID: " + id, e);
+         throw new DatabaseException("Erro ao atualizar a entidade " + id, e);
       }
    }
 
@@ -100,35 +111,16 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void delete(int id) throws DatabaseException {
+   public void delete(Integer id) throws DatabaseException {
       try {
-         boolean removed = entities.removeIf(entity -> entity.getId() == id);
-         if (!removed) {
-               throw new DatabaseException("Entidade não encontrada com ID: " + id);
+         T removed = entities.remove(id);
+
+         if (removed == null) {
+            throw new EntityNotFoundException(
+                  "A entidade " + id + " não existe.");
          }
       } catch (Exception e) {
-         throw new DatabaseException("Erro ao deletar a entidade com ID: " + id, e);
+         throw new DatabaseException("Erro ao deletar a entidade " + id, e);
       }
-   }
-   /* TESTANDO  */
-   //  public static void main(String[] args) {
-   //      try {
-   //          CryptoCurrency teste = new CryptoCurrency("Bitcoin", 68.520, 1000, 350);
-   //          DatabaseTable<CryptoCurrency> testeTable = new DatabaseTable<>();
-   //          testeTable.save(teste);
-
-   //          // Tentando recuperar todas as entidades
-   //          List<CryptoCurrency> allEntities = testeTable.findAll();
-   //          allEntities.forEach(t -> {
-   //             System.out.println(t.getName());
-   //          });
-
-   //      } catch (DatabaseException e) {
-   //          e.printStackTrace();
-   //      }
-   //  }
-   @Override
-   public String toString() {
-       return entities.toString();
    }
 }
