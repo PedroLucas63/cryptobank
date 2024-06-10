@@ -1,16 +1,16 @@
 package bank.entity;
 
-public class Role extends Entity {
+public class Career extends Entity {
    private String title;
    private Boolean updateEmployees;
-   private Boolean updateRoles;
+   private Boolean updateCareers;
    private Boolean updateCurrencies;
 
-   public Role(String title, Boolean updateEmployees, Boolean updateRoles,
+   public Career(String title, Boolean updateEmployees, Boolean updateCareers,
          Boolean updateCurrencies) {
       this.title = title;
       this.updateEmployees = updateEmployees;
-      this.updateRoles = updateRoles;
+      this.updateCareers = updateCareers;
       this.updateCurrencies = updateCurrencies;
    }
 
@@ -30,12 +30,12 @@ public class Role extends Entity {
       this.updateEmployees = updateEmployees;
    }
 
-   public Boolean getUpdateRoles() {
-      return updateRoles;
+   public Boolean getUpdateCareers() {
+      return updateCareers;
    }
 
-   public void setUpdateRoles(Boolean updateRoles) {
-      this.updateRoles = updateRoles;
+   public void setUpdateCareers(Boolean updateCareers) {
+      this.updateCareers = updateCareers;
    }
 
    public Boolean getUpdateCurrencies() {
@@ -53,8 +53,8 @@ public class Role extends Entity {
 
    @Override
    public boolean equals(Object obj) {
-      if (obj instanceof Role) {
-         return ((Role) obj).getTitle().equals(title);
+      if (obj instanceof Career) {
+         return ((Career) obj).getTitle().equals(title);
       }
 
       return false;

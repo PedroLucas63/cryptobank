@@ -2,13 +2,13 @@ package bank.entity;
 
 public class Employee extends User {
    private Float salary;
-   private Role role;
+   private Career career;
 
    public Employee(String name, String document, String password, Integer age,
-         String email, Float salary, Role role) {
+         String email, Float salary, Career career) {
       super(name, document, password, age, email);
       this.salary = salary;
-      this.role = role;
+      this.career = career;
    }
 
    public Float getSalary() {
@@ -19,11 +19,11 @@ public class Employee extends User {
       this.salary = salary;
    }
 
-   public Role getRole() {
-      return role;
+   public Career getCareer() {
+      return career;
    }
 
-   public void setRole(Role role) {
-      this.role = role;
+   public void setCareer(Career career) {
+      this.career = career;
    }
 }
