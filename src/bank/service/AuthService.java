@@ -1,7 +1,6 @@
 package bank.service;
 
 import java.util.Optional;
-
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import bank.dao.UserDAO;
 import bank.entity.User;
@@ -11,9 +10,10 @@ public class AuthService {
    private UserDAO userDAO = new UserDAO();
    private static User user = null;
 
-   public Boolean login(String username, String password) {
+   public Boolean login(String document, String password) {
       try {
-         Optional<User> user = userDAO.findById(username.hashCode());
+         /// TODO: Remover pontuação do documento
+         Optional<User> user = userDAO.findById(document.hashCode());
 
          if (!user.isPresent()) {
             return false;

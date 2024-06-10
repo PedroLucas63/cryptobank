@@ -52,6 +52,7 @@ public class CreateUserView implements View {
          password = scanner.next();
          break;
       case ENTRY_AGE:
+         /// TODO: Try Catch
          age = scanner.nextInt();
          break;
       case ENTRY_EMAIL:

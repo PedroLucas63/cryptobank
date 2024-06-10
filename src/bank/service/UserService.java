@@ -12,6 +12,7 @@ public class UserService {
 
    public Boolean create(String name, String document, String password,
          Integer age, String email) {
+      /// TODO: Remover pontuação do documento
       if (UserValidator.isValid(name, document, password, age, email)) {
          try {
             password = BCrypt.withDefaults().hashToString(12,
