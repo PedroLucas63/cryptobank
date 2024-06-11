@@ -2,8 +2,7 @@ package bank.utils;
 
 public class DocumentValidator {
     public static Boolean isValidCPF(String cpf) {
-        cpf = cpf.replace(".", "").replace("-", "");
-
+        cpf = DocumentTransformer.transform(cpf);
         if (cpf.length() != 11) {
             return false;
         }
@@ -30,7 +29,7 @@ public class DocumentValidator {
     }
 
     public static Boolean isValidCNPJ(String cnpj) {
-        cnpj = cnpj.replace(".", "").replace("/", "").replace("-", "");
+        cnpj = DocumentTransformer.transform(cnpj);
 
         if (cnpj.length() != 14) {
             return false;

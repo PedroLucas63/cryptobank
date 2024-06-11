@@ -5,6 +5,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import bank.dao.UserDAO;
 import bank.entity.User;
 import bank.exception.DAOException;
+import bank.utils.DocumentTransformer;
 
 public class AuthService {
    private UserDAO userDAO = new UserDAO();
@@ -12,7 +13,7 @@ public class AuthService {
 
    public Boolean login(String document, String password) {
       try {
-         /// TODO: Remover pontuação do documento
+         document = DocumentTransformer.transform(document);
          Optional<User> user = userDAO.findById(document.hashCode());
 
          if (!user.isPresent()) {

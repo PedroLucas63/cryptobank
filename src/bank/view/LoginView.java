@@ -17,20 +17,26 @@ public class LoginView implements View {
    private Scanner scanner = new Scanner(System.in);
    private AuthService authService = new AuthService();
    private String document, password;
+   private String loginWarning;
 
    private void title() {
       System.out.println("=====================================");
       System.out.println("   Cryptobank - O seu banco seguro   ");
       System.out.println("=====================================");
-      System.out.println("=============== LOGIN ===============");
+      System.out.println("\n=============== LOGIN ===============");
    }
 
    private void validateLogin() {
       if (authService.login(document, password)) {
          state = LoginViewState.LOGGED;
       } else {
+         loginWarning = "O usuário não foi autenticado! Revise os dados.";
          state = LoginViewState.END;
       }
+   }
+
+   public String getWarning() {
+      return loginWarning;
    }
 
    /**
@@ -39,6 +45,8 @@ public class LoginView implements View {
     */
    @Override
    public void process() {
+      loginWarning = null;
+
       switch (state) {
       case ENTRY_DOCUMENT:
          document = scanner.next();

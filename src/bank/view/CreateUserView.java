@@ -2,6 +2,7 @@ package bank.view;
 
 import java.util.Scanner;
 import bank.service.UserService;
+import java.util.InputMismatchException;
 
 /**
  * Singleton class representing the main view of the bank application. This
@@ -19,10 +20,21 @@ public class CreateUserView implements View {
    private UserService userService = new UserService();
    private String name, document, password, email;
    private Integer age;
+   private String createUserWarning;
+
+   private void getAge() {
+      try {
+         age = scanner.nextInt();
+      } catch (InputMismatchException e) {
+         createUserWarning = "O usuário não foi criado! A idade deve ser um número.";
+      }
+   }
 
    private void validateUser() {
       if (userService.create(name, document, password, age, email)) {
-         System.out.println("Usuário criado com sucesso!");
+         createUserWarning = "O usuário criado com sucesso!";
+      } else if (createUserWarning == null) {
+         createUserWarning = "O usuário não foi criado! Revise os dados.";
       }
 
       state = CreateUserViewState.END;
@@ -32,7 +44,11 @@ public class CreateUserView implements View {
       System.out.println("=====================================");
       System.out.println("   Cryptobank - O seu banco seguro   ");
       System.out.println("=====================================");
-      System.out.println("=========== CRIAR USUÁRIO ===========");
+      System.out.println("\n=========== CRIAR USUÁRIO ===========");
+   }
+
+   public String getWarning() {
+      return createUserWarning;
    }
 
    /**
@@ -41,9 +57,11 @@ public class CreateUserView implements View {
     */
    @Override
    public void process() {
+      createUserWarning = null;
+
       switch (state) {
       case ENTRY_NAME:
-         name = scanner.next();
+         name = scanner.nextLine();
          break;
       case ENTRY_DOCUMENT:
          document = scanner.next();
@@ -52,8 +70,7 @@ public class CreateUserView implements View {
          password = scanner.next();
          break;
       case ENTRY_AGE:
-         /// TODO: Try Catch
-         age = scanner.nextInt();
+         getAge();
          break;
       case ENTRY_EMAIL:
          email = scanner.next();

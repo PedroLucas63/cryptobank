@@ -27,7 +27,7 @@ public class MainView implements View {
       try {
          entry = scanner.nextInt();
       } catch (InputMismatchException e) {
-         entryWarning = e.getMessage();
+         entryWarning = "Apenas números são aceitos.";
       }
    }
 
@@ -48,9 +48,9 @@ public class MainView implements View {
    }
 
    private void menu() {
-      System.out.println("====================================");
-      System.out.println("         Cryptobank - O seu banco seguro");
-      System.out.println("====================================");
+      System.out.println("=====================================");
+      System.out.println("   Cryptobank - O seu banco seguro   ");
+      System.out.println("=====================================");
 
       if (entryWarning != null) {
          System.out.println("\nAviso: " + entryWarning + "\n");
@@ -73,6 +73,12 @@ public class MainView implements View {
       switch (state) {
       case MENU:
          getEntry();
+         break;
+      case LOGIN:
+         entryWarning = loginView.getWarning();
+         break;
+      case CREATE_USER:
+         entryWarning = createUserView.getWarning();
          break;
       default:
          break;
