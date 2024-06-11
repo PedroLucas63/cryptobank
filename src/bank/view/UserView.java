@@ -1,24 +1,20 @@
 package bank.view;
 
+import java.util.List;
+import bank.entity.Account;
+import bank.service.AccountService;
+import bank.service.UserService;
 import bank.utils.InputValidator;
 
-/**
- * Singleton class representing the main view of the bank application. This
- * class implements the View interface and provides methods to process user
- * input and update the view.
- */
-public class MainView implements View {
+public class UserView implements View {
    enum State {
-      BEGIN, MENU, LOGIN, CREATE_USER, END,
+      BEGIN, MENU, ACCOUNT, CREATE_ACCOUNT, EMPLOYEE, END,
    };
 
    private State state = State.BEGIN;
 
    private Integer entryOption;
    private String warning;
-
-   private LoginView loginView = new LoginView();
-   private CreateUserView createUserView = new CreateUserView();
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -31,21 +27,24 @@ public class MainView implements View {
    private void validateEntry() {
       if (entryOption == null) {
          return;
-      }
-      
-      switch (entryOption) {
-      case 1:
-         state = State.LOGIN;
-         break;
-      case 2:
-         state = State.CREATE_USER;
-         break;
-      case 3:
+      } else if (entryOption == 0) {
          state = State.END;
-         break;
-      default:
-         warning = "Opção inválida!";
-         break;
+      }
+
+      List<Account> accounts = AccountService.getAccounts();
+      Integer i = 0;
+
+      for (Account account : accounts) {
+         if (++i == entryOption) {
+            /// AccountService.setActiveAccount(account)
+            state = State.ACCOUNT;
+         }
+      }
+
+      if (++i == entryOption) {
+         state = State.CREATE_ACCOUNT;
+      } else if (++i == entryOption && UserService.isEmployee()) {
+         state = State.EMPLOYEE;
       }
    }
 
@@ -53,15 +52,29 @@ public class MainView implements View {
       System.out.println("=====================================");
       System.out.println("   Cryptobank - O seu banco seguro   ");
       System.out.println("=====================================");
+      System.out.println("\n=========== ACESSAR CONTA ===========");
 
       if (warning != null) {
          System.out.println("\nAviso: " + warning + "\n");
       }
 
-      System.out.println("1. Entrar");
-      System.out.println("2. Criar conta");
-      System.out.println("3. Sair");
-      System.out.print("Selecione uma opção: ");
+      List<Account> accounts = AccountService.getAccounts();
+
+      Integer i = 0;
+
+      for (Account account : accounts) {
+         System.out.println(
+               ++i + ". " + account.getId() + " | " + account.getClass());
+      }
+
+      System.out.println(++i + ". Criar conta");
+
+      if (UserService.isEmployee()) {
+         System.out.println(++i + ". Funcionário");
+      }
+
+      System.out.println("\n0. Voltar");
+      System.out.print("Selecione uma conta: ");
    }
 
    /**
@@ -76,11 +89,9 @@ public class MainView implements View {
       case MENU:
          getEntryOption();
          break;
-      case LOGIN:
-         warning = loginView.getWarning();
-         break;
-      case CREATE_USER:
-         warning = createUserView.getWarning();
+      case ACCOUNT:
+      case CREATE_ACCOUNT:
+      case EMPLOYEE:
          break;
       default:
          break;
@@ -96,6 +107,9 @@ public class MainView implements View {
       switch (state) {
       case MENU:
          validateEntry();
+         break;
+      case END:
+         state = State.BEGIN;
          break;
       default:
          state = State.MENU;
@@ -113,11 +127,9 @@ public class MainView implements View {
       case MENU:
          menu();
          break;
-      case LOGIN:
-         loginView.startView();
-         break;
-      case CREATE_USER:
-         createUserView.startView();
+      case ACCOUNT:
+      case CREATE_ACCOUNT:
+      case EMPLOYEE:
          break;
       default:
          break;

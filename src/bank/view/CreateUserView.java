@@ -1,8 +1,8 @@
 package bank.view;
 
-import java.util.Scanner;
 import bank.service.UserService;
-import java.util.InputMismatchException;
+import bank.utils.InputValidator;
+import bank.utils.UserValidator;
 
 /**
  * Singleton class representing the main view of the bank application. This
@@ -10,34 +10,69 @@ import java.util.InputMismatchException;
  * input and update the view.
  */
 public class CreateUserView implements View {
-   enum CreateUserViewState {
+   enum State {
       BEGIN, TITLE, ENTRY_NAME, ENTRY_DOCUMENT, ENTRY_PASSWORD, ENTRY_AGE,
       ENTRY_EMAIL, END,
    };
 
-   private CreateUserViewState state = CreateUserViewState.BEGIN;
-   private Scanner scanner = new Scanner(System.in);
-   private UserService userService = new UserService();
-   private String name, document, password, email;
-   private Integer age;
-   private String createUserWarning;
+   private State state = State.BEGIN;
 
-   private void getAge() {
-      try {
-         age = scanner.nextInt();
-      } catch (InputMismatchException e) {
-         createUserWarning = "O usuário não foi criado! A idade deve ser um número.";
+   private String userName, userDocument, userPassword, userEmail;
+   private Integer userAge;
+
+   private String warning;
+
+   private void getUserName() {
+      userName = InputValidator.getLine();
+
+      if (!UserValidator.name(userName)) {
+         warning = "Nome não validado.";
+      }
+   }
+
+   private void getUserDocument() {
+      userDocument = InputValidator.getString();
+
+      if (!UserValidator.document(userDocument)) {
+         warning = "Documento não validado.";
+      }
+   }
+
+   private void getUserPassword() {
+      userPassword = InputValidator.getPassword();
+
+      if (!UserValidator.password(userPassword)) {
+         warning = "Senha não validada.";
+      }
+   }
+
+   private void getUserAge() {
+      userAge = InputValidator.getInteger();
+
+      if (userAge == null) {
+         warning = "A idade precisa ser um número.";
+      } else if (!UserValidator.age(userAge)) {
+         warning = "Idade não validada.";
+      }
+   }
+
+   private void getUserEmail() {
+      userEmail = InputValidator.getString();
+
+      if (!UserValidator.email(userEmail)) {
+         warning = "Email não validado.";
       }
    }
 
    private void validateUser() {
-      if (userService.create(name, document, password, age, email)) {
-         createUserWarning = "O usuário criado com sucesso!";
-      } else if (createUserWarning == null) {
-         createUserWarning = "O usuário não foi criado! Revise os dados.";
+      if (UserService.create(userName, userDocument, userPassword, userAge,
+            userEmail)) {
+         warning = "O usuário criado com sucesso!";
+      } else {
+         warning = "O usuário não foi criado! Revise os dados.";
       }
 
-      state = CreateUserViewState.END;
+      state = State.END;
    }
 
    private void title() {
@@ -48,7 +83,7 @@ public class CreateUserView implements View {
    }
 
    public String getWarning() {
-      return createUserWarning;
+      return warning;
    }
 
    /**
@@ -57,23 +92,23 @@ public class CreateUserView implements View {
     */
    @Override
    public void process() {
-      createUserWarning = null;
+      warning = null;
 
       switch (state) {
       case ENTRY_NAME:
-         name = scanner.nextLine();
+         getUserName();
          break;
       case ENTRY_DOCUMENT:
-         document = scanner.next();
+         getUserDocument();
          break;
       case ENTRY_PASSWORD:
-         password = scanner.next();
+         getUserPassword();
          break;
       case ENTRY_AGE:
-         getAge();
+         getUserAge();
          break;
       case ENTRY_EMAIL:
-         email = scanner.next();
+         getUserEmail();
          break;
       default:
          break;
@@ -86,30 +121,35 @@ public class CreateUserView implements View {
     */
    @Override
    public void update() {
+      if (warning != null) {
+         state = State.END;
+         return;
+      }
+
       switch (state) {
       case BEGIN:
-         state = CreateUserViewState.TITLE;
+         state = State.TITLE;
          break;
       case TITLE:
-         state = CreateUserViewState.ENTRY_NAME;
+         state = State.ENTRY_NAME;
          break;
       case ENTRY_NAME:
-         state = CreateUserViewState.ENTRY_DOCUMENT;
+         state = State.ENTRY_DOCUMENT;
          break;
       case ENTRY_DOCUMENT:
-         state = CreateUserViewState.ENTRY_PASSWORD;
+         state = State.ENTRY_PASSWORD;
          break;
       case ENTRY_PASSWORD:
-         state = CreateUserViewState.ENTRY_AGE;
+         state = State.ENTRY_AGE;
          break;
       case ENTRY_AGE:
-         state = CreateUserViewState.ENTRY_EMAIL;
+         state = State.ENTRY_EMAIL;
          break;
       case ENTRY_EMAIL:
          validateUser();
          break;
       case END:
-         state = CreateUserViewState.BEGIN;
+         state = State.BEGIN;
          break;
       default:
          break;
@@ -154,6 +194,6 @@ public class CreateUserView implements View {
     */
    @Override
    public Boolean exit() {
-      return state == CreateUserViewState.END;
+      return state == State.END;
    }
 }

@@ -1,7 +1,7 @@
 package bank.view;
 
-import java.util.Scanner;
 import bank.service.AuthService;
+import bank.utils.InputValidator;
 
 /**
  * Singleton class representing the main view of the bank application. This
@@ -9,15 +9,16 @@ import bank.service.AuthService;
  * input and update the view.
  */
 public class LoginView implements View {
-   enum LoginViewState {
+   enum State {
       BEGIN, TITLE, ENTRY_DOCUMENT, ENTRY_PASSWORD, LOGGED, END,
    };
 
-   private LoginViewState state = LoginViewState.BEGIN;
-   private Scanner scanner = new Scanner(System.in);
-   private AuthService authService = new AuthService();
-   private String document, password;
-   private String loginWarning;
+   private State state = State.BEGIN;
+
+   private String userDocument, userPassword;
+   private String warning;
+
+   private UserView userView = new UserView();
 
    private void title() {
       System.out.println("=====================================");
@@ -27,16 +28,16 @@ public class LoginView implements View {
    }
 
    private void validateLogin() {
-      if (authService.login(document, password)) {
-         state = LoginViewState.LOGGED;
+      if (AuthService.login(userDocument, userPassword)) {
+         state = State.LOGGED;
       } else {
-         loginWarning = "O usuário não foi autenticado! Revise os dados.";
-         state = LoginViewState.END;
+         warning = "O usuário não foi autenticado! Revise os dados.";
+         state = State.END;
       }
    }
 
    public String getWarning() {
-      return loginWarning;
+      return warning;
    }
 
    /**
@@ -45,14 +46,14 @@ public class LoginView implements View {
     */
    @Override
    public void process() {
-      loginWarning = null;
+      warning = null;
 
       switch (state) {
       case ENTRY_DOCUMENT:
-         document = scanner.next();
+         userDocument = InputValidator.getString();
          break;
       case ENTRY_PASSWORD:
-         password = scanner.next();
+         userPassword = InputValidator.getPassword();
          break;
       default:
          break;
@@ -67,19 +68,22 @@ public class LoginView implements View {
    public void update() {
       switch (state) {
       case BEGIN:
-         state = LoginViewState.TITLE;
+         state = State.TITLE;
          break;
       case TITLE:
-         state = LoginViewState.ENTRY_DOCUMENT;
+         state = State.ENTRY_DOCUMENT;
          break;
       case ENTRY_DOCUMENT:
-         state = LoginViewState.ENTRY_PASSWORD;
+         state = State.ENTRY_PASSWORD;
          break;
       case ENTRY_PASSWORD:
          validateLogin();
          break;
+      case LOGGED:
+         state = State.END;
+         break;
       case END:
-         state = LoginViewState.BEGIN;
+         state = State.BEGIN;
          break;
       default:
          break;
@@ -103,7 +107,7 @@ public class LoginView implements View {
          System.out.print("Senha: ");
          break;
       case LOGGED:
-         System.out.println("Login efetuado com sucesso!");
+         userView.startView();
          break;
       default:
          break;
@@ -118,6 +122,6 @@ public class LoginView implements View {
     */
    @Override
    public Boolean exit() {
-      return state == LoginViewState.END;
+      return state == State.END;
    }
 }

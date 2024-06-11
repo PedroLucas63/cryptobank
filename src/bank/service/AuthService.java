@@ -8,23 +8,24 @@ import bank.exception.DAOException;
 import bank.utils.DocumentTransformer;
 
 public class AuthService {
-   private UserDAO userDAO = new UserDAO();
+   private static UserDAO userDAO = new UserDAO();
    private static User user = null;
 
-   public Boolean login(String document, String password) {
+   public static Boolean login(String document, String password) {
       try {
          document = DocumentTransformer.transform(document);
-         Optional<User> user = userDAO.findById(document.hashCode());
 
-         if (!user.isPresent()) {
+         Optional<User> searchedUser = userDAO.findById(document.hashCode());
+
+         if (!searchedUser.isPresent()) {
             return false;
          }
 
          BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(),
-               user.get().getPassword().toCharArray());
+               searchedUser.get().getPassword().toCharArray());
 
          if (result.verified) {
-            this.user = user.get();
+            user = searchedUser.get();
             return true;
          } else {
             return false;
@@ -34,7 +35,7 @@ public class AuthService {
       }
    }
 
-   public void logout() {
+   public static void logout() {
       user = null;
    }
 
