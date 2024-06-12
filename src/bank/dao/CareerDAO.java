@@ -42,7 +42,7 @@ public class CareerDAO implements DAO<Career> {
     */
    @SuppressWarnings("unchecked")
    @Override
-   public Optional<Career> findById(Integer id) throws DAOException {
+   public Optional<Career> findById(Long id) throws DAOException {
       try {
          return (Optional<Career>) database.findById(Career.class, id);
       } catch (DatabaseException e) {
@@ -113,7 +113,7 @@ public class CareerDAO implements DAO<Career> {
     * @throws DAOException If an error occurs while updating the entity.
     */
    @Override
-   public void update(Integer id, Career entity) throws DAOException {
+   public void update(Long id, Career entity) throws DAOException {
       try {
          database.update(Career.class, id, entity);
       } catch (DatabaseException e) {
@@ -128,7 +128,7 @@ public class CareerDAO implements DAO<Career> {
     * @throws DAOException If an error occurs while deleting the entity.
     */
    @Override
-   public void delete(Integer id) throws DAOException {
+   public void delete(Long id) throws DAOException {
       try {
          database.delete(Career.class, id);
       } catch (DatabaseException e) {

@@ -1,22 +1,26 @@
 package bank.view;
 
-import java.util.List;
 import bank.entity.Account;
 import bank.service.AccountService;
 import bank.service.UserService;
 import bank.utils.InputValidator;
+import bank.utils.UserValidator;
 
-public class UserView implements View {
+/**
+ * Singleton class representing the main view of the bank application. This
+ * class implements the View interface and provides methods to process user
+ * input and update the view.
+ */
+public class CreateAccountView implements View {
    enum State {
-      BEGIN, MENU, ACCOUNT, CREATE_ACCOUNT, EMPLOYEE, END,
+      BEGIN, MENU, CREATE_CURRENT, CREATE_CRYPTO, END,
    };
 
    private State state = State.BEGIN;
 
    private Integer entryOption;
-   private String warning;
 
-   private View createAccountView = new CreateAccountView();
+   private String warning;
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -29,54 +33,48 @@ public class UserView implements View {
    private void validateEntry() {
       if (entryOption == null) {
          return;
-      } else if (entryOption == 0) {
+      }
+
+      switch (entryOption) {
+      case 1:
+         state = State.CREATE_CURRENT;
+         break;
+      case 2:
+         state = State.CREATE_CRYPTO;
+         break;
+      case 3:
          state = State.END;
+         break;
+      default:
+         warning = "Opção inválida!";
+         break;
       }
+   }
 
-      List<Account> accounts = AccountService.getAccounts();
-      Integer i = 0;
+   private void createCurrentAccount() {
+      AccountService.createCurrentAccount();
+      warning = "Conta corrente criada com sucesso!";
+   }
 
-      for (Account account : accounts) {
-         if (++i == entryOption) {
-            AccountService.setActiveAccount(account);
-            state = State.ACCOUNT;
-         }
-      }
-
-      if (++i == entryOption) {
-         state = State.CREATE_ACCOUNT;
-      } else if (++i == entryOption && UserService.isEmployee()) {
-         state = State.EMPLOYEE;
-      }
+   private void createCryptoAccount() {
+      AccountService.createCryptoAccount();
+      warning = "Conta cripto criada com sucesso!";
    }
 
    private void menu() {
       System.out.println("=====================================");
       System.out.println("   Cryptobank - O seu banco seguro   ");
       System.out.println("=====================================");
-      System.out.println("\n=========== ACESSAR CONTA ===========");
+      System.out.println("\n============ CRIAR CONTA ============");
 
       if (warning != null) {
          System.out.println("\nAviso: " + warning + "\n");
       }
 
-      List<Account> accounts = AccountService.getAccounts();
-
-      Integer i = 0;
-
-      for (Account account : accounts) {
-         System.out.println(++i + ". " + account.getId() + " | "
-               + account.getClass().getSimpleName());
-      }
-
-      System.out.println(++i + ". Criar conta");
-
-      if (UserService.isEmployee()) {
-         System.out.println(++i + ". Funcionário");
-      }
-
-      System.out.println("\n0. Voltar");
-      System.out.print("Selecione uma conta: ");
+      System.out.println("1. Conta Corrente");
+      System.out.println("2. Conta Cripto");
+      System.out.println("3. Sair");
+      System.out.print("Selecione uma opção: ");
    }
 
    /**
@@ -91,10 +89,11 @@ public class UserView implements View {
       case MENU:
          getEntryOption();
          break;
-      case ACCOUNT:
-      case CREATE_ACCOUNT:
-
-      case EMPLOYEE:
+      case CREATE_CURRENT:
+         createCurrentAccount();
+         break;
+      case CREATE_CRYPTO:
+         createCryptoAccount();
          break;
       default:
          break;
@@ -129,13 +128,6 @@ public class UserView implements View {
       switch (state) {
       case MENU:
          menu();
-         break;
-      case ACCOUNT:
-         break;
-      case CREATE_ACCOUNT:
-         createAccountView.startView();
-         break;
-      case EMPLOYEE:
          break;
       default:
          break;

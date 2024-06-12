@@ -33,7 +33,7 @@ public interface DAO<T extends Entity> {
     *         no entity is found.
     * @throws DAOException if there is an error during the find operation.
     */
-   Optional<T> findById(Integer id) throws DAOException;
+   Optional<T> findById(Long id) throws DAOException;
 
    /**
     * Retrieves all entities from the database.
@@ -69,7 +69,7 @@ public interface DAO<T extends Entity> {
     * @param entity the updated entity.
     * @throws DAOException if there is an error during the update operation.
     */
-   void update(Integer id, T entity) throws DAOException;
+   void update(Long id, T entity) throws DAOException;
 
    /**
     * Deletes an entity from the database by its ID.
@@ -77,5 +77,5 @@ public interface DAO<T extends Entity> {
     * @param id the ID of the entity to delete.
     * @throws DAOException if there is an error during the delete operation.
     */
-   void delete(Integer id) throws DAOException;
+   void delete(Long id) throws DAOException;
 }

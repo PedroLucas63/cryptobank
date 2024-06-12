@@ -15,7 +15,8 @@ public class AuthService {
       try {
          document = DocumentTransformer.transform(document);
 
-         Optional<User> searchedUser = userDAO.findById(document.hashCode());
+         Optional<User> searchedUser = userDAO
+               .findById((long) document.hashCode());
 
          if (!searchedUser.isPresent()) {
             return false;

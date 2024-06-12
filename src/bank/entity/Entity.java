@@ -5,14 +5,14 @@ package bank.entity;
  * setter methods for the id.
  */
 public abstract class Entity {
-   protected Integer id; /// The unique identifier of the entity.
+   protected Long id; /// The unique identifier of the entity.
 
    /**
     * Returns the id of the entity.
     *
     * @return the id of the entity
     */
-   public Integer getId() {
+   public Long getId() {
       return id;
    }
 
@@ -21,7 +21,7 @@ public abstract class Entity {
     *
     * @param id the new id of the entity
     */
-   public void setId(Integer id) {
+   public void setId(Long id) {
       this.id = id;
    }
 

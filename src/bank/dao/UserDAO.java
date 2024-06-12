@@ -42,7 +42,7 @@ public class UserDAO implements DAO<User> {
     */
    @SuppressWarnings("unchecked")
    @Override
-   public Optional<User> findById(Integer id) throws DAOException {
+   public Optional<User> findById(Long id) throws DAOException {
       try {
          return (Optional<User>) database.findById(User.class, id);
       } catch (DatabaseException e) {
@@ -111,7 +111,7 @@ public class UserDAO implements DAO<User> {
     * @throws DAOException If an error occurs while updating the entity.
     */
    @Override
-   public void update(Integer id, User entity) throws DAOException {
+   public void update(Long id, User entity) throws DAOException {
       try {
          database.update(User.class, id, entity);
       } catch (DatabaseException e) {
@@ -126,7 +126,7 @@ public class UserDAO implements DAO<User> {
     * @throws DAOException If an error occurs while deleting the entity.
     */
    @Override
-   public void delete(Integer id) throws DAOException {
+   public void delete(Long id) throws DAOException {
       try {
          database.delete(User.class, id);
       } catch (DatabaseException e) {

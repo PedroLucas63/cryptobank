@@ -63,6 +63,7 @@ public class Database {
       try {
          DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
          table.save(entity);
+         tables.put(clazz, table);
       } catch (DatabaseException e) {
          throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
@@ -79,7 +80,7 @@ public class Database {
     * @throws DatabaseException if there is an error during the find operation.
     */
    public <T extends Entity> Optional<? extends Entity> findById(Class<T> clazz,
-         Integer id) throws DatabaseException {
+         Long id) throws DatabaseException {
       checkClass(clazz);
 
       try {
@@ -120,13 +121,14 @@ public class Database {
     *                           operation.
     */
    @SuppressWarnings("unchecked")
-   public <T extends Entity> void update(Class<T> clazz, Integer id, T entity)
+   public <T extends Entity> void update(Class<T> clazz, Long id, T entity)
          throws DatabaseException {
       checkClass(clazz);
 
       try {
          DatabaseTable<T> table = (DatabaseTable<T>) tables.get(clazz);
          table.update(id, entity);
+         tables.put(clazz, table);
       } catch (DatabaseException e) {
          throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
@@ -141,7 +143,7 @@ public class Database {
     * @throws DatabaseException if there is an error during the delete
     *                           operation.
     */
-   public <T extends Entity> void delete(Class<T> clazz, Integer id)
+   public <T extends Entity> void delete(Class<T> clazz, Long id)
          throws DatabaseException {
       checkClass(clazz);
 

@@ -19,7 +19,7 @@ import bank.exception.UniqueKeyException;
  *            class.
  */
 public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
-   private Map<Integer, T> entities = new HashMap<>();
+   private Map<Long, T> entities = new HashMap<>();
 
    /**
     * Saves a new entity to the database table.
@@ -30,7 +30,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
    @Override
    public void save(T entity) throws DatabaseException {
       try {
-         entity.setId(entity.hashCode());
+         entity.setId((long) entity.hashCode());
 
          if (entities.containsKey(entity.getId())) {
             throw new UniqueKeyException("A chave única da entidade "
@@ -53,7 +53,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     * @throws DatabaseException if there is an error during the find operation.
     */
    @Override
-   public Optional<T> findById(Integer id) throws DatabaseException {
+   public Optional<T> findById(Long id) throws DatabaseException {
       try {
          return Optional.of(entities.get(id));
       } catch (Exception e) {
@@ -87,14 +87,11 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void update(Integer id, T entity) throws DatabaseException {
+   public void update(Long id, T entity) throws DatabaseException {
       try {
          if (!entities.containsKey(id)) {
             throw new EntityNotFoundException(
                   "A entidade " + id + " não existe.");
-         } else if (!entities.get(id).equals(entity)) {
-            throw new UniqueKeyException(
-                  "A chave única da entidade " + id + " já está em uso.");
          }
 
          entities.replace(id, entity);
@@ -111,7 +108,7 @@ public class DatabaseTable<T extends Entity> implements DatabaseTableI<T> {
     *                           operation.
     */
    @Override
-   public void delete(Integer id) throws DatabaseException {
+   public void delete(Long id) throws DatabaseException {
       try {
          T removed = entities.remove(id);
 

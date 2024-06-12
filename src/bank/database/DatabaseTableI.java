@@ -31,7 +31,7 @@ public interface DatabaseTableI<T extends Entity> {
     *         no entity is found.
     * @throws DatabaseException If there is an error while finding the entity.
     */
-   Optional<T> findById(Integer id) throws DatabaseException;
+   Optional<T> findById(Long id) throws DatabaseException;
 
    /**
     * Retrieves all entities from the database.
@@ -49,7 +49,7 @@ public interface DatabaseTableI<T extends Entity> {
     * @param entity The updated entity.
     * @throws DatabaseException If there is an error while updating the entity.
     */
-   void update(Integer id, T entity) throws DatabaseException;
+   void update(Long id, T entity) throws DatabaseException;
 
    /**
     * Deletes an entity from the database by its ID.
@@ -57,5 +57,5 @@ public interface DatabaseTableI<T extends Entity> {
     * @param id The ID of the entity to be deleted.
     * @throws DatabaseException If there is an error while deleting the entity.
     */
-   void delete(Integer id) throws DatabaseException;
+   void delete(Long id) throws DatabaseException;
 }
