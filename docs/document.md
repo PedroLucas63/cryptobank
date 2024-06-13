@@ -70,6 +70,10 @@ O projeto é um sistema bancário digital que oferece suporte tanto para moedas 
 
 ![Diagrama de Classes do Pacote DAO](diagrams/dao.png)
 
+### Diagrama Geral de Classes
+
+[Clique aqui!](requeriments/functional.md)
+
 ## Status dos Pacotes Service e View
 
 Os diagramas dos pacotes Service e View ainda estão em fase de construção. Estes pacotes são essenciais para a implementação da lógica de negócios e da interface de usuário do sistema.
@@ -81,8 +85,8 @@ Os diagramas desses pacotes serão incluídos em versões futuras do documento a
 
 ## Documentos de Requisitos
 
-- [Requisitos Funcionais](requeriments/functional.pdf)
-- [Requisitos Não Funcionais](requeriments/non-functional.pdf)
+- [Requisitos Funcionais](requeriments/functional.md)
+- [Requisitos Não Funcionais](requeriments/non-functional.md)
 
 ## Conclusão
 
