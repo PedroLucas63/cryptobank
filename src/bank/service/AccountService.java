@@ -46,7 +46,7 @@ public class AccountService {
       activeAccount = account;
    }
 
-   public static Account getOpenAccount() {
+   public static Account getActiveAccount() {
       return activeAccount;
    }
 
