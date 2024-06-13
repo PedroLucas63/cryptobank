@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import bank.database.Database;
 import bank.entity.Currency;
@@ -40,11 +41,10 @@ public class CurrencyDAO implements DAO<Currency> {
     *         empty Optional.
     * @throws DAOException If an error occurs while finding the entity.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public Optional<Currency> findById(Long id) throws DAOException {
       try {
-         return (Optional<Currency>) database.findById(Currency.class, id);
+         return database.findById(Currency.class, id);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca pela moeda.", e);
       }
@@ -56,11 +56,10 @@ public class CurrencyDAO implements DAO<Currency> {
     * @return A List of Currency entities.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Currency> findAll() throws DAOException {
       try {
-         return (List<Currency>) database.findAll(Currency.class);
+         return database.findAll(Currency.class);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca das moedas.", e);
       }
@@ -73,14 +72,12 @@ public class CurrencyDAO implements DAO<Currency> {
     * @return A List of Currency entities that satisfy the filter.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Currency> findAll(Predicate<Currency> filter)
          throws DAOException {
       try {
-         List<Currency> list = (List<Currency>) database
-               .findAll(Currency.class);
-         return list.stream().filter(filter).toList();
+         List<Currency> list = database.findAll(Currency.class);
+         return list.stream().filter(filter).collect(Collectors.toList());
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca das moedas.", e);
       }
@@ -94,14 +91,12 @@ public class CurrencyDAO implements DAO<Currency> {
     * @return A List of Currency entities sorted by the comparator.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Currency> findAll(Comparator<Currency> comparator)
          throws DAOException {
       try {
-         List<Currency> list = (List<Currency>) database
-               .findAll(Currency.class);
-         return list.stream().sorted(comparator).toList();
+         List<Currency> list = database.findAll(Currency.class);
+         return list.stream().sorted(comparator).collect(Collectors.toList());
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca das moedas.", e);
       }

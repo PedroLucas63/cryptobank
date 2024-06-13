@@ -79,12 +79,13 @@ public class Database {
     *         no entity is found.
     * @throws DatabaseException if there is an error during the find operation.
     */
-   public <T extends Entity> Optional<? extends Entity> findById(Class<T> clazz,
-         Long id) throws DatabaseException {
+   @SuppressWarnings("unchecked")
+   public <T extends Entity> Optional<T> findById(Class<T> clazz, Long id)
+         throws DatabaseException {
       checkClass(clazz);
 
       try {
-         return tables.get(clazz).findById(id);
+         return (Optional<T>) tables.get(clazz).findById(id);
       } catch (DatabaseException e) {
          throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }
@@ -99,12 +100,13 @@ public class Database {
     * @throws DatabaseException if there is an error during the retrieval
     *                           operation.
     */
-   public <T extends Entity> List<? extends Entity> findAll(Class<T> clazz)
+   @SuppressWarnings("unchecked")
+   public <T extends Entity> List<T> findAll(Class<T> clazz)
          throws DatabaseException {
       checkClass(clazz);
 
       try {
-         return tables.get(clazz).findAll();
+         return (List<T>) tables.get(clazz).findAll();
       } catch (DatabaseException e) {
          throw new DatabaseException(e.getMessage() + " Classe: " + clazz, e);
       }

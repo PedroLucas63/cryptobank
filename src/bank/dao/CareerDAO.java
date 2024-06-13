@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import bank.database.Database;
 import bank.entity.Career;
@@ -40,11 +41,10 @@ public class CareerDAO implements DAO<Career> {
     *         Optional if not found.
     * @throws DAOException If an error occurs while finding the entity.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public Optional<Career> findById(Long id) throws DAOException {
       try {
-         return (Optional<Career>) database.findById(Career.class, id);
+         return database.findById(Career.class, id);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca pelo cargo.", e);
       }
@@ -56,11 +56,10 @@ public class CareerDAO implements DAO<Career> {
     * @return A List of all Career entities.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Career> findAll() throws DAOException {
       try {
-         return (List<Career>) database.findAll(Career.class);
+         return database.findAll(Career.class);
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos cargos.", e);
       }
@@ -74,12 +73,11 @@ public class CareerDAO implements DAO<Career> {
     * @return A List of Career entities that satisfy the filter.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Career> findAll(Predicate<Career> filter) throws DAOException {
       try {
-         List<Career> list = (List<Career>) database.findAll(Career.class);
-         return list.stream().filter(filter).toList();
+         List<Career> list = database.findAll(Career.class);
+         return list.stream().filter(filter).collect(Collectors.toList());
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos cargos.", e);
       }
@@ -93,13 +91,12 @@ public class CareerDAO implements DAO<Career> {
     * @return A List of Career entities sorted according to the comparator.
     * @throws DAOException If an error occurs while retrieving the entities.
     */
-   @SuppressWarnings("unchecked")
    @Override
    public List<Career> findAll(Comparator<Career> comparator)
          throws DAOException {
       try {
-         List<Career> list = (List<Career>) database.findAll(Career.class);
-         return list.stream().sorted(comparator).toList();
+         List<Career> list = database.findAll(Career.class);
+         return list.stream().sorted(comparator).collect(Collectors.toList());
       } catch (DatabaseException e) {
          throw new DAOException("Erro na busca dos cargos.", e);
       }
