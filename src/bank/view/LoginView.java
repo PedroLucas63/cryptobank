@@ -8,7 +8,7 @@ import bank.utils.InputValidator;
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class LoginView implements View {
+public class LoginView extends ViewAbstract {
    enum State {
       BEGIN, TITLE, ENTRY_DOCUMENT, ENTRY_PASSWORD, LOGGED, END,
    };
@@ -16,16 +16,8 @@ public class LoginView implements View {
    private State state = State.BEGIN;
 
    private String userDocument, userPassword;
-   private String warning;
 
    private UserView userView = new UserView();
-
-   private void title() {
-      System.out.println("=====================================");
-      System.out.println("   Cryptobank - O seu banco seguro   ");
-      System.out.println("=====================================");
-      System.out.println("\n=============== LOGIN ===============");
-   }
 
    private void validateLogin() {
       if (AuthService.login(userDocument, userPassword)) {
@@ -34,10 +26,6 @@ public class LoginView implements View {
          warning = "O usuário não foi autenticado! Revise os dados.";
          state = State.END;
       }
-   }
-
-   public String getWarning() {
-      return warning;
    }
 
    /**

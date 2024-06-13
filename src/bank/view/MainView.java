@@ -7,7 +7,7 @@ import bank.utils.InputValidator;
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class MainView implements View {
+public class MainView extends ViewAbstract {
    enum State {
       BEGIN, MENU, LOGIN, CREATE_USER, END,
    };
@@ -15,7 +15,6 @@ public class MainView implements View {
    private State state = State.BEGIN;
 
    private Integer entryOption;
-   private String warning;
 
    private LoginView loginView = new LoginView();
    private CreateUserView createUserView = new CreateUserView();
@@ -32,7 +31,7 @@ public class MainView implements View {
       if (entryOption == null) {
          return;
       }
-      
+
       switch (entryOption) {
       case 1:
          state = State.LOGIN;
@@ -50,13 +49,7 @@ public class MainView implements View {
    }
 
    private void menu() {
-      System.out.println("=====================================");
-      System.out.println("   Cryptobank - O seu banco seguro   ");
-      System.out.println("=====================================");
-
-      if (warning != null) {
-         System.out.println("\nAviso: " + warning + "\n");
-      }
+      title();
 
       System.out.println("1. Entrar");
       System.out.println("2. Criar conta");

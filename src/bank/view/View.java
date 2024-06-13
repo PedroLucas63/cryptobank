@@ -10,20 +10,7 @@ public interface View {
     * Method to start the view. This method will continue running the view until
     * the exit condition is met.
     */
-   default void startView() {
-      do {
-         process(); // Process user input or perform necessary actions.
-         update(); // Update the view based on any changes.
-         view(); // Render the view to display data to the user.
-      } while (!exit());
-   }
-
-   /**
-    * Method to check if the view should exit.
-    * 
-    * @return true if the view should exit, false otherwise.
-    */
-   Boolean exit();
+   void startView();
 
    /**
     * Method to process user input or perform necessary actions. This method is
@@ -42,4 +29,11 @@ public interface View {
     * responsible for rendering the view's content.
     */
    void view();
+
+   /**
+    * Method to check if the view should exit.
+    * 
+    * @return true if the view should exit, false otherwise.
+    */
+   Boolean exit();
 }

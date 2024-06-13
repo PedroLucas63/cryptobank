@@ -1,10 +1,10 @@
 package bank.service;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import bank.dao.UserDAO;
 import bank.entity.Employee;
 import bank.entity.User;
 import bank.exception.DAOException;
+import bank.utils.BCryptUtils;
 import bank.utils.DocumentTransformer;
 
 public class UserService {
@@ -14,8 +14,7 @@ public class UserService {
          Integer age, String email) {
       try {
          document = DocumentTransformer.transform(document);
-         password = BCrypt.withDefaults().hashToString(12,
-               password.toCharArray());
+         password = BCryptUtils.encrypt(password);
 
          userDAO.save(new User(name, document, password, age, email));
 

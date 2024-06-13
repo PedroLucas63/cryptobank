@@ -2,19 +2,20 @@ package bank.view;
 
 import java.util.List;
 import bank.entity.Account;
+import bank.entity.CurrentAccount;
 import bank.service.AccountService;
+import bank.service.AuthService;
 import bank.service.UserService;
 import bank.utils.InputValidator;
 
-public class UserView implements View {
+public class UserView extends ViewAbstract {
    enum State {
-      BEGIN, MENU, ACCOUNT, CREATE_ACCOUNT, EMPLOYEE, END,
+      BEGIN, MENU, ACCOUNT, CREATE_ACCOUNT, EMPLOYEE, LOGOUT, END,
    };
 
    private State state = State.BEGIN;
 
    private Integer entryOption;
-   private String warning;
 
    private View createAccountView = new CreateAccountView();
 
@@ -26,13 +27,7 @@ public class UserView implements View {
       }
    }
 
-   private void validateEntry() {
-      if (entryOption == null) {
-         return;
-      } else if (entryOption == 0) {
-         state = State.END;
-      }
-
+   private void validateActiveChoice() {
       List<Account> accounts = AccountService.getAccounts();
       Integer i = 0;
 
@@ -43,39 +38,53 @@ public class UserView implements View {
          }
       }
 
-      if (++i == entryOption) {
-         state = State.CREATE_ACCOUNT;
-      } else if (++i == entryOption && UserService.isEmployee()) {
+      if (UserService.isEmployee() && ++i == entryOption) {
          state = State.EMPLOYEE;
+      } else if (++i == entryOption) {
+         state = State.CREATE_ACCOUNT;
       }
    }
 
-   private void menu() {
-      System.out.println("=====================================");
-      System.out.println("   Cryptobank - O seu banco seguro   ");
-      System.out.println("=====================================");
-      System.out.println("\n=========== ACESSAR CONTA ===========");
-
-      if (warning != null) {
-         System.out.println("\nAviso: " + warning + "\n");
+   private void validateEntry() {
+      if (entryOption == null) {
+         return;
+      } else if (entryOption == 0) {
+         state = State.LOGOUT;
+      } else {
+         validateActiveChoice();
       }
+   }
 
+   private void printAccounts() {
       List<Account> accounts = AccountService.getAccounts();
 
       Integer i = 0;
 
       for (Account account : accounts) {
-         System.out.println(++i + ". " + account.getId() + " | "
-               + account.getClass().getSimpleName());
-      }
+         System.out.print(++i + ". " + account.getId() + " | ");
 
-      System.out.println(++i + ". Criar conta");
+         if (account instanceof CurrentAccount) {
+            System.out.println("Conta corrente");
+         } else {
+            System.out.println("Conta cripto");
+         }
+      }
+   }
+
+   private void menu() {
+      title();
+
+      printAccounts();
+
+      Integer accountsAmount = AccountService.getAccounts().size();
 
       if (UserService.isEmployee()) {
-         System.out.println(++i + ". Funcionário");
+         System.out.println(++accountsAmount + ". Funcionário");
       }
 
-      System.out.println("\n0. Voltar");
+      System.out.println("\n" + ++accountsAmount + ". Criar nova conta");
+
+      System.out.println("\n0. Logout");
       System.out.print("Selecione uma conta: ");
    }
 
@@ -93,8 +102,10 @@ public class UserView implements View {
          break;
       case ACCOUNT:
       case CREATE_ACCOUNT:
-
       case EMPLOYEE:
+         break;
+      case LOGOUT:
+         AuthService.logout();
          break;
       default:
          break;
@@ -110,6 +121,9 @@ public class UserView implements View {
       switch (state) {
       case MENU:
          validateEntry();
+         break;
+      case LOGOUT:
+         state = State.END;
          break;
       case END:
          state = State.BEGIN;

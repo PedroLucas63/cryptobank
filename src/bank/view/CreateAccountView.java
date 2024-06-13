@@ -1,17 +1,14 @@
 package bank.view;
 
-import bank.entity.Account;
 import bank.service.AccountService;
-import bank.service.UserService;
 import bank.utils.InputValidator;
-import bank.utils.UserValidator;
 
 /**
  * Singleton class representing the main view of the bank application. This
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class CreateAccountView implements View {
+public class CreateAccountView extends ViewAbstract {
    enum State {
       BEGIN, MENU, CREATE_CURRENT, CREATE_CRYPTO, END,
    };
@@ -19,7 +16,6 @@ public class CreateAccountView implements View {
    private State state = State.BEGIN;
 
    private Integer entryOption;
-
    private String warning;
 
    private void getEntryOption() {
@@ -62,10 +58,7 @@ public class CreateAccountView implements View {
    }
 
    private void menu() {
-      System.out.println("=====================================");
-      System.out.println("   Cryptobank - O seu banco seguro   ");
-      System.out.println("=====================================");
-      System.out.println("\n============ CRIAR CONTA ============");
+      title();
 
       if (warning != null) {
          System.out.println("\nAviso: " + warning + "\n");

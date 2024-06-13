@@ -1,10 +1,10 @@
 package bank.service;
 
 import java.util.Optional;
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import bank.dao.UserDAO;
 import bank.entity.User;
 import bank.exception.DAOException;
+import bank.utils.BCryptUtils;
 import bank.utils.DocumentTransformer;
 
 public class AuthService {
@@ -22,10 +22,7 @@ public class AuthService {
             return false;
          }
 
-         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(),
-               searchedUser.get().getPassword().toCharArray());
-
-         if (result.verified) {
+         if (BCryptUtils.verify(password, searchedUser.get().getPassword())) {
             user = searchedUser.get();
             return true;
          } else {

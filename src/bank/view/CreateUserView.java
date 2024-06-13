@@ -9,7 +9,7 @@ import bank.utils.UserValidator;
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class CreateUserView implements View {
+public class CreateUserView extends ViewAbstract {
    enum State {
       BEGIN, TITLE, ENTRY_NAME, ENTRY_DOCUMENT, ENTRY_PASSWORD, ENTRY_AGE,
       ENTRY_EMAIL, END,
@@ -19,8 +19,6 @@ public class CreateUserView implements View {
 
    private String userName, userDocument, userPassword, userEmail;
    private Integer userAge;
-
-   private String warning;
 
    private void getUserName() {
       userName = InputValidator.getLine();
@@ -73,17 +71,6 @@ public class CreateUserView implements View {
       }
 
       state = State.END;
-   }
-
-   private void title() {
-      System.out.println("=====================================");
-      System.out.println("   Cryptobank - O seu banco seguro   ");
-      System.out.println("=====================================");
-      System.out.println("\n=========== CRIAR USUÁRIO ===========");
-   }
-
-   public String getWarning() {
-      return warning;
    }
 
    /**
