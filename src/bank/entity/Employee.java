@@ -11,6 +11,12 @@ public class Employee extends User {
       this.career = career;
    }
 
+    public Employee(User user, Career career, Float salary) {
+        super(user.getName(), user.getDocument(), user.getPassword(), user.getAge(), user.getEmail());
+        this.career = career;
+        this.salary = salary;
+    }
+
    public Float getSalary() {
       return salary;
    }

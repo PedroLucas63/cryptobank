@@ -18,6 +18,7 @@ public class UserView extends ViewAbstract {
    private Integer entryOption;
 
    private View createAccountView = new CreateAccountView();
+   private View createEmployeeView = new EmployeeView();
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -103,6 +104,7 @@ public class UserView extends ViewAbstract {
       case ACCOUNT:
       case CREATE_ACCOUNT:
       case EMPLOYEE:
+         createEmployeeView.startView();
          break;
       case LOGOUT:
          AuthService.logout();

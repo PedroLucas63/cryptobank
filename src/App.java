@@ -1,3 +1,6 @@
+import bank.dao.CareerDAO;
+import bank.entity.Career;
+import bank.service.EmployeeService;
 import bank.service.UserService;
 import bank.view.MainView;
 import bank.view.View;
@@ -19,5 +22,15 @@ public class App {
                 "mariana.souza@example.com");
         UserService.create("Carlos Alberto", "22.333.444/0002-90", "Carlos123",
                 35, "carlos.alberto@example.com");
+        UserService.create("Administrador", "123.567.890-11", "Admin123",
+                20, "admin@example.com");
+        Career Administrator = new Career("Administrator", true, true, true);
+        CareerDAO careerDAO = new CareerDAO();
+        try {
+                careerDAO.save(Administrator);
+        } catch (Exception e) {
+                System.out.println(e);
+        }
+        EmployeeService.create("123.567.890-11", Administrator, 20500.0F);
     };
 }

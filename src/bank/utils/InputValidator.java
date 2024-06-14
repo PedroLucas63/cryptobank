@@ -24,9 +24,26 @@ public class InputValidator {
       return str;
    }
 
+   public static String getCareer() {
+      String str = scanner.next();
+      return str.toLowerCase();
+   }
+
    public static String getLine() {
       String line = scanner.nextLine();
       return line;
+   }
+
+   public static Float getSalary() {
+      try {
+         Float salary = Float.parseFloat(scanner.next());
+
+         scanner.nextLine();
+         
+         return salary;
+      } catch (NumberFormatException e) {
+         return null;
+      }
    }
 
    public static String getPassword() {
