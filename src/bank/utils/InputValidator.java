@@ -12,7 +12,19 @@ public class InputValidator {
          Integer number = Integer.parseInt(scanner.next());
 
          scanner.nextLine();
-         
+
+         return number;
+      } catch (NumberFormatException e) {
+         return null;
+      }
+   }
+
+   public static Double getDouble() {
+      try {
+         Double number = Double.parseDouble(scanner.next());
+
+         scanner.nextLine();
+
          return number;
       } catch (NumberFormatException e) {
          return null;

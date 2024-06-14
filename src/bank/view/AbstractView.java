@@ -1,6 +1,6 @@
 package bank.view;
 
-public abstract class ViewAbstract implements View {
+public abstract class AbstractView implements View {
    protected String warning = null;
 
    protected String getWarning() {

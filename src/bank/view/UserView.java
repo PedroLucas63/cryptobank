@@ -1,23 +1,20 @@
 package bank.view;
 
-import java.util.List;
-import bank.entity.Account;
-import bank.entity.CurrentAccount;
 import bank.service.AccountService;
 import bank.service.AuthService;
 import bank.service.UserService;
 import bank.utils.InputValidator;
 
-public class UserView extends ViewAbstract {
+public class UserView extends AbstractView {
    enum State {
-      BEGIN, MENU, ACCOUNT, CREATE_ACCOUNT, EMPLOYEE, LOGOUT, END,
+      BEGIN, MENU, ACCOUNTS_VIEW, OPEN_ACCOUNTS, EMPLOYEE_VIEW, LOGOUT, END,
    };
 
    private State state = State.BEGIN;
 
    private Integer entryOption;
 
-   private View createAccountView = new CreateAccountView();
+   private AbstractView accountView = new AccountView();
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -27,22 +24,11 @@ public class UserView extends ViewAbstract {
       }
    }
 
-   private void validateActiveChoice() {
-      List<Account> accounts = AccountService.getAccounts();
-      Integer i = 0;
+   private void openAccounts() {
+      AccountService.createCurrentAccount();
+      AccountService.createCryptoAccount();
 
-      for (Account account : accounts) {
-         if (++i == entryOption) {
-            AccountService.setActiveAccount(account);
-            state = State.ACCOUNT;
-         }
-      }
-
-      if (UserService.isEmployee() && ++i == entryOption) {
-         state = State.EMPLOYEE;
-      } else if (++i == entryOption) {
-         state = State.CREATE_ACCOUNT;
-      }
+      warning = "Contas criadas com sucesso!";
    }
 
    private void validateEntry() {
@@ -50,42 +36,36 @@ public class UserView extends ViewAbstract {
          return;
       } else if (entryOption == 0) {
          state = State.LOGOUT;
-      } else {
-         validateActiveChoice();
-      }
-   }
-
-   private void printAccounts() {
-      List<Account> accounts = AccountService.getAccounts();
-
-      Integer i = 0;
-
-      for (Account account : accounts) {
-         System.out.print(++i + ". " + account.getId() + " | ");
-
-         if (account instanceof CurrentAccount) {
-            System.out.println("Conta corrente");
+      } else if (entryOption == 1) {
+         if (AccountService.hasAccounts()) {
+            state = State.ACCOUNTS_VIEW;
          } else {
-            System.out.println("Conta cripto");
+            state = State.OPEN_ACCOUNTS;
          }
+      } else if (entryOption == 2 && UserService.isEmployee()) {
+         state = State.EMPLOYEE_VIEW;
+      } else {
+         warning = "Opção inválida!";
       }
    }
 
    private void menu() {
       title();
 
-      printAccounts();
+      Integer options = 1;
 
-      Integer accountsAmount = AccountService.getAccounts().size();
-
-      if (UserService.isEmployee()) {
-         System.out.println(++accountsAmount + ". Funcionário");
+      if (AccountService.hasAccounts()) {
+         System.out.println(options++ + ". Acessar conta");
+      } else {
+         System.out.println(options++ + ". Abrir uma conta");
       }
 
-      System.out.println("\n" + ++accountsAmount + ". Criar nova conta");
+      if (UserService.isEmployee()) {
+         System.out.println(options++ + ". Funcionário");
+      }
 
-      System.out.println("\n0. Logout");
-      System.out.print("Selecione uma conta: ");
+      System.out.println("0. Logout");
+      System.out.print("\nSelecione uma opção: ");
    }
 
    /**
@@ -100,12 +80,15 @@ public class UserView extends ViewAbstract {
       case MENU:
          getEntryOption();
          break;
-      case ACCOUNT:
-      case CREATE_ACCOUNT:
-      case EMPLOYEE:
+      case OPEN_ACCOUNTS:
+         openAccounts();
+         break;
+      case ACCOUNTS_VIEW:
+         warning = accountView.getWarning();
          break;
       case LOGOUT:
          AuthService.logout();
+         warning = "Saída com sucesso!";
          break;
       default:
          break;
@@ -144,12 +127,8 @@ public class UserView extends ViewAbstract {
       case MENU:
          menu();
          break;
-      case ACCOUNT:
-         break;
-      case CREATE_ACCOUNT:
-         createAccountView.startView();
-         break;
-      case EMPLOYEE:
+      case ACCOUNTS_VIEW:
+         accountView.startView();
          break;
       default:
          break;

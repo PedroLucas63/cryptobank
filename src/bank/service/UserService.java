@@ -22,7 +22,17 @@ public class UserService {
       } catch (DAOException e) {
          return false;
       }
+   }
 
+   public static Boolean updateLogged() {
+      try {
+         User loggedUser = AuthService.getUser();
+         userDAO.update(loggedUser.getId(), loggedUser);
+
+         return true;
+      } catch (DAOException e) {
+         return false;
+      }
    }
 
    public static Boolean isClient() {

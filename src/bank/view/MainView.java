@@ -7,7 +7,7 @@ import bank.utils.InputValidator;
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class MainView extends ViewAbstract {
+public class MainView extends AbstractView {
    enum State {
       BEGIN, MENU, LOGIN, CREATE_USER, END,
    };
@@ -16,8 +16,8 @@ public class MainView extends ViewAbstract {
 
    private Integer entryOption;
 
-   private LoginView loginView = new LoginView();
-   private CreateUserView createUserView = new CreateUserView();
+   private AbstractView loginView = new LoginView();
+   private AbstractView createUserView = new CreateUserView();
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -30,21 +30,14 @@ public class MainView extends ViewAbstract {
    private void validateEntry() {
       if (entryOption == null) {
          return;
-      }
-
-      switch (entryOption) {
-      case 1:
+      } else if (entryOption == 1) {
          state = State.LOGIN;
-         break;
-      case 2:
+      } else if (entryOption == 2) {
          state = State.CREATE_USER;
-         break;
-      case 3:
+      } else if (entryOption == 0) {
          state = State.END;
-         break;
-      default:
+      } else {
          warning = "Opção inválida!";
-         break;
       }
    }
 
@@ -53,8 +46,8 @@ public class MainView extends ViewAbstract {
 
       System.out.println("1. Entrar");
       System.out.println("2. Criar conta");
-      System.out.println("3. Sair");
-      System.out.print("Selecione uma opção: ");
+      System.out.println("0. Sair");
+      System.out.print("\nSelecione uma opção: ");
    }
 
    /**

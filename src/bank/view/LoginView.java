@@ -8,7 +8,7 @@ import bank.utils.InputValidator;
  * class implements the View interface and provides methods to process user
  * input and update the view.
  */
-public class LoginView extends ViewAbstract {
+public class LoginView extends AbstractView {
    enum State {
       BEGIN, TITLE, ENTRY_DOCUMENT, ENTRY_PASSWORD, LOGGED, END,
    };
@@ -17,7 +17,7 @@ public class LoginView extends ViewAbstract {
 
    private String userDocument, userPassword;
 
-   private UserView userView = new UserView();
+   private AbstractView userView = new UserView();
 
    private void validateLogin() {
       if (AuthService.login(userDocument, userPassword)) {
@@ -42,6 +42,9 @@ public class LoginView extends ViewAbstract {
          break;
       case ENTRY_PASSWORD:
          userPassword = InputValidator.getPassword();
+         break;
+      case LOGGED:
+         warning = userView.getWarning();
          break;
       default:
          break;
