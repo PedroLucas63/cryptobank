@@ -43,7 +43,7 @@ public class UpdateEmployeeView extends ViewAbstract{
 
    private void validateUser() {
       if (EmployeeService.updateInfo(document, salary, career)) {
-         warning = "As informações do funcionário foram atualiazadas com sucesso!";
+         System.out.println("As informações do funcionário foram atualiazadas com sucesso!");
       } else {
          warning = "Houve algum problema na mudança dos dados! Revise-os e tente novamente.";
       }
@@ -119,7 +119,7 @@ public class UpdateEmployeeView extends ViewAbstract{
       System.out.print("Digite a nova carreira do funcionário de documento '" + document + "' : ");
       break;
     case END:
-      if(!warning.equals(null)){
+      if(warning != null){
         System.out.println("WARNING: " + warning);
       }
     default:
