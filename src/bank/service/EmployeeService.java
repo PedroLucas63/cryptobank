@@ -3,9 +3,13 @@ package bank.service;
 import java.util.Optional;
 
 import bank.dao.CareerDAO;
+import bank.dao.CurrencyDAO;
 import bank.dao.UserDAO;
 import bank.entity.Career;
+import bank.entity.CryptoCurrency;
+
 import bank.entity.Employee;
+import bank.entity.FiatCurrency;
 import bank.entity.User;
 import bank.exception.DAOException;
 import bank.utils.DocumentTransformer;
@@ -13,6 +17,7 @@ import bank.utils.DocumentTransformer;
 public class EmployeeService {
     private static UserDAO userDAO = new UserDAO();
     private static CareerDAO careerDAO = new CareerDAO();
+    private static CurrencyDAO currencyDAO = new CurrencyDAO();
     private static Employee employee;
     public static Boolean create(String userDocument, Career career, Float salary) {
       try {
@@ -98,4 +103,31 @@ public class EmployeeService {
          System.out.println(e);
       }
     }
+
+    public static Boolean addFiatCurrency(String name, String symbol, Double value){
+      try {
+         if(symbol.length() > 4 || name.length() > 15 || value < 0){
+            return false;
+         }
+         FiatCurrency newCurrency = new FiatCurrency(name,symbol, value);
+         currencyDAO.save(newCurrency);
+         return true;
+      } catch (Exception e) {
+         return false;
+      }
+    }
+
+    public static Boolean addCryptoCurrency(String name, String symbol, Double value, Integer suplyMaximum){
+      try {
+         if(symbol.length() > 4 || name.length() > 15 || suplyMaximum < 0 || value < 0){
+            return false;
+         }
+         CryptoCurrency newCurrency = new CryptoCurrency(name,symbol, value, suplyMaximum);
+         currencyDAO.save(newCurrency);
+         return true;
+      } catch (Exception e) {
+         return false;
+      }
+    }
+
 }
