@@ -43,7 +43,7 @@ public abstract class Currency extends Entity {
    @Override
    public boolean equals(Object obj) {
       if (obj instanceof Currency) {
-         return ((Currency) obj).getName().equals(name);
+         return ((Currency) obj).getName().equalsIgnoreCase(name);
       }
 
       return false;

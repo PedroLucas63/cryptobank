@@ -31,14 +31,43 @@ public class InputValidator {
       }
    }
 
+   public static Double getDouble() {
+      try {
+         Double number = Double.parseDouble(scanner.next());
+
+         scanner.nextLine();
+         
+         return number;
+      } catch (NumberFormatException e) {
+         return null;
+      }
+   }
+
    public static String getString() {
       String str = scanner.next();
       return str;
    }
 
+   public static String getCareer() {
+      String str = scanner.next();
+      return str.toLowerCase();
+   }
+
    public static String getLine() {
       String line = scanner.nextLine();
       return line;
+   }
+
+   public static Float getSalary() {
+      try {
+         Float salary = Float.parseFloat(scanner.next());
+
+         scanner.nextLine();
+         
+         return salary;
+      } catch (NumberFormatException e) {
+         return null;
+      }
    }
 
    public static String getPassword() {

@@ -8,7 +8,7 @@ public class Career extends Entity {
 
    public Career(String title, Boolean updateEmployees, Boolean updateCareers,
          Boolean updateCurrencies) {
-      this.title = title;
+      this.title = title.toLowerCase();
       this.updateEmployees = updateEmployees;
       this.updateCareers = updateCareers;
       this.updateCurrencies = updateCurrencies;
@@ -54,7 +54,7 @@ public class Career extends Entity {
    @Override
    public boolean equals(Object obj) {
       if (obj instanceof Career) {
-         return ((Career) obj).getTitle().equals(title);
+         return ((Career) obj).getTitle().equalsIgnoreCase(title);
       }
 
       return false;

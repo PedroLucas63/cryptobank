@@ -4,7 +4,7 @@ import java.util.Optional;
 import bank.dao.UserDAO;
 import bank.entity.User;
 import bank.exception.DAOException;
-import bank.utils.BCryptUtils;
+//import bank.utils.BCryptUtils;
 import bank.utils.DocumentTransformer;
 
 public class AuthService {
@@ -22,7 +22,7 @@ public class AuthService {
             return false;
          }
 
-         if (BCryptUtils.verify(password, searchedUser.get().getPassword())) {
+         if (password.equals(searchedUser.get().getPassword())) {
             user = searchedUser.get();
             return true;
          } else {
