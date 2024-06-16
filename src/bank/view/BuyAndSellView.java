@@ -100,7 +100,7 @@ public class BuyAndSellView extends AbstractView {
 
          System.out.println(
                ++i + ". " + currency.getName() + " - " + currency.getSymbol()
-                     + amount + "($ " + currency.getValue() * +")");
+                     + amount + "($ " + currency.getValue() * amount + ")");
       }
 
       System.out.print("\nEscolha sua moeda de venda: ");
