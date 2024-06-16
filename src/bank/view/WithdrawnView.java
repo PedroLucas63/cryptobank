@@ -1,13 +1,13 @@
 package bank.view;
 
-import java.util.List;
+import java.util.Map;
 
 import bank.entity.Currency;
-import bank.service.CurrencyService;
+import bank.service.BalancesService;
 import bank.service.MoneyService;
 import bank.utils.InputValidator;
 
-public class DepositView extends AbstractView {
+public class WithdrawnView extends AbstractView {
    enum State {
       BEGIN, ENTRY_CURRENCY, ENTRY_AMOUNT, END
    };
@@ -15,37 +15,51 @@ public class DepositView extends AbstractView {
    private State state = State.BEGIN;
    private Integer currencyEntry;
    private Double amountEntry;
-   private Currency currency;
+   private Map.Entry<Currency, Double> withdrawnOption;
 
    private void getCurrencyEntry() {
       currencyEntry = InputValidator.getInteger();
-      List<Currency> currencies = CurrencyService.getFiatCurrencies();
+
+      Map<Currency, Double> balances = BalancesService.getFiatBalances();
 
       if (currencyEntry == null || currencyEntry < 1
-            || currencyEntry > currencies.size()) {
+            || currencyEntry > balances.size()) {
          warning = "A moeda informada não existe.";
       } else {
-         currency = currencies.get(currencyEntry - 1);
+         Integer i = 0;
+
+         for (Map.Entry<Currency, Double> entry : balances.entrySet()) {
+            if (++i == currencyEntry) {
+               withdrawnOption = entry;
+               break;
+            }
+         }
       }
    }
 
    private void getAmountEntry() {
       amountEntry = InputValidator.getDouble();
 
-      if (amountEntry == null || amountEntry <= 0) {
-         warning = "Deposite um valor maior.";
+      if (amountEntry == null || amountEntry <= 0
+            || amountEntry > withdrawnOption.getValue()) {
+         warning = "Saque um valor válido.";
       } else {
-         MoneyService.transaction(currency, amountEntry);
+         MoneyService.transaction(withdrawnOption.getKey(), -amountEntry);
       }
    }
 
    private void currenciesList() {
       System.out.println("\nMoedas disponíveis:\n");
 
-      List<Currency> currencies = CurrencyService.getFiatCurrencies();
+      Map<Currency, Double> balances = BalancesService.getFiatBalances();
 
-      for (Integer i = 0; i < currencies.size(); i++) {
-         System.out.println(i + 1 + ". " + currencies.get(i).getName());
+      Integer i = 0;
+      for (Map.Entry<Currency, Double> entry : balances.entrySet()) {
+         Currency currency = entry.getKey();
+         Double amount = entry.getValue();
+
+         System.out.println(++i + ". " + currency.getName() + " - Disponível: "
+               + currency.getSymbol() + amount);
       }
 
       System.out.print("\nSelecione uma opção: ");
@@ -99,7 +113,8 @@ public class DepositView extends AbstractView {
          currenciesList();
          break;
       case ENTRY_AMOUNT:
-         System.out.print("Digite o valor: " + currency.getSymbol() + " ");
+         System.out.print(
+               "Digite o valor: " + withdrawnOption.getKey().getSymbol() + " ");
          break;
       default:
          break;
@@ -110,5 +125,4 @@ public class DepositView extends AbstractView {
    public Boolean exit() {
       return state == State.END;
    }
-
 }

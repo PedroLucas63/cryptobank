@@ -31,18 +31,6 @@ public class InputValidator {
       }
    }
 
-   public static Double getDouble() {
-      try {
-         Double number = Double.parseDouble(scanner.next());
-
-         scanner.nextLine();
-         
-         return number;
-      } catch (NumberFormatException e) {
-         return null;
-      }
-   }
-
    public static String getString() {
       String str = scanner.next();
       return str;

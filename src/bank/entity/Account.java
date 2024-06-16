@@ -46,4 +46,8 @@ public abstract class Account extends Entity {
    public List<Transaction> getTransactions() {
       return transactions;
    }
+
+   public void addTransaction(Currency currency, Double amount) {
+      transactions.add(new Transaction(currency, amount));
+   }
 }

@@ -3,53 +3,55 @@ package bank.view;
 import bank.service.EmployeeService;
 import bank.utils.InputValidator;
 
-public class UpdateEmployeeView extends ViewAbstract{
-   enum State {
-      BEGIN, TITLE,DOCUMENT, SALARY, CAREER,END,
-   };
-   private State state = State.BEGIN;
-   private String warning;  
-   private String document;
-   private Float salary;
-   private String career;
+public class UpdateEmployeeView extends AbstractView {
+  enum State {
+    BEGIN, TITLE, DOCUMENT, SALARY, CAREER, END,
+  };
+
+  private State state = State.BEGIN;
+  private String warning;
+  private String document;
+  private Float salary;
+  private String career;
 
   private void getUserDocument() {
     document = InputValidator.getString();
 
-    if(!EmployeeService.searchEmployee(document)){
+    if (!EmployeeService.searchEmployee(document)) {
       warning = "O usuário não foi encontrado ou não é um funcionário.";
     }
   }
 
-  private void getUserCareer(){
+  private void getUserCareer() {
     career = InputValidator.getCareer();
-    if(!EmployeeService.searchCareer(career)){
+    if (!EmployeeService.searchCareer(career)) {
       warning = "Essa carreira não está registrada.";
-    }
-    else{
-      System.out.println("A carreira do funcionário de documento '" + document + "' foi atualiazada com sucesso!");
+    } else {
+      System.out.println("A carreira do funcionário de documento '" + document
+          + "' foi atualiazada com sucesso!");
     }
   }
 
-  private void getUserSalary(){
+  private void getUserSalary() {
     salary = InputValidator.getSalary();
-    if(!EmployeeService.validSalary(salary)){
+    if (!EmployeeService.validSalary(salary)) {
       warning = "Esse salário não é válido.";
-    }
-    else{
-      System.out.println("O salário do funcionário de documento '" + document + "' foi atualiazado com sucesso!");
+    } else {
+      System.out.println("O salário do funcionário de documento '" + document
+          + "' foi atualizado com sucesso!");
     }
   }
 
-   private void validateUser() {
-      if (EmployeeService.updateInfo(document, salary, career)) {
-         System.out.println("As informações do funcionário foram atualiazadas com sucesso!");
-      } else {
-         warning = "Houve algum problema na mudança dos dados! Revise-os e tente novamente.";
-      }
+  private void validateUser() {
+    if (EmployeeService.updateInfo(document, salary, career)) {
+      System.out.println(
+          "As informações do funcionário foram atualizadas com sucesso!");
+    } else {
+      warning = "Houve algum problema na mudança dos dados! Revise-os e tente novamente.";
+    }
 
-      state = State.END;
-   }
+    state = State.END;
+  }
 
   @Override
   public void process() {
@@ -69,7 +71,7 @@ public class UpdateEmployeeView extends ViewAbstract{
       getUserCareer();
       break;
     default:
-        break;
+      break;
     }
   }
 
@@ -103,6 +105,7 @@ public class UpdateEmployeeView extends ViewAbstract{
       break;
     }
   }
+
   @Override
   public void view() {
     switch (state) {
@@ -110,24 +113,28 @@ public class UpdateEmployeeView extends ViewAbstract{
       title();
       break;
     case DOCUMENT:
-      System.out.print("Digite o documento do funcionário que se deseja atualizar: ");
+      System.out
+          .print("Digite o documento do funcionário que se deseja atualizar: ");
       break;
     case SALARY:
-      System.out.print("Digite o novo salário do funcionário de documento '" + document + "' : ");
+      System.out.print("Digite o novo salário do funcionário de documento '"
+          + document + "' : ");
       break;
     case CAREER:
-      System.out.print("Digite a nova carreira do funcionário de documento '" + document + "' : ");
+      System.out.print("Digite a nova carreira do funcionário de documento '"
+          + document + "' : ");
       break;
     case END:
-      if(warning != null){
+      if (warning != null) {
         System.out.println("WARNING: " + warning);
       }
     default:
       break;
     }
   }
+
   @Override
   public Boolean exit() {
     return state == State.END;
-  } 
+  }
 }

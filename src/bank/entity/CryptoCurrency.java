@@ -2,12 +2,12 @@ package bank.entity;
 
 public class CryptoCurrency extends Currency {
    private Double originalValue;
-   private Integer supplyMaximum;
-   private Integer supplyInUse = 0;
+   private Double supplyMaximum;
+   private Double supplyInUse = 0d;
    private Double growthRate;
 
    public CryptoCurrency(String name, String symbol, Double value,
-         Integer supplyMaximum) {
+         Double supplyMaximum) {
       super(name, symbol, value);
       this.originalValue = value;
       this.supplyMaximum = supplyMaximum;
@@ -26,7 +26,7 @@ public class CryptoCurrency extends Currency {
       }
    }
 
-   public boolean buy(Integer amount) {
+   public boolean buy(Double amount) {
       if (supplyInUse + amount <= supplyMaximum) {
          supplyInUse += amount;
          autoUpdateValue();
@@ -37,7 +37,7 @@ public class CryptoCurrency extends Currency {
       return false;
    }
 
-   public boolean sell(Integer amount) {
+   public boolean sell(Double amount) {
       if (supplyInUse - amount >= 0) {
          supplyInUse -= amount;
          autoUpdateValue();
@@ -48,19 +48,19 @@ public class CryptoCurrency extends Currency {
       return false;
    }
 
-   public Integer getSupplyMaximum() {
+   public Double getSupplyMaximum() {
       return supplyMaximum;
    }
 
-   public void setSupplyMaximum(Integer supplyMaximum) {
+   public void setSupplyMaximum(Double supplyMaximum) {
       this.supplyMaximum = supplyMaximum;
    }
 
-   public Integer getSupplyInUse() {
+   public Double getSupplyInUse() {
       return supplyInUse;
    }
 
-   public void setSupplyInUse(Integer supplyInUse) {
+   public void setSupplyInUse(Double supplyInUse) {
       this.supplyInUse = supplyInUse;
    }
 

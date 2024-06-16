@@ -1,24 +1,26 @@
 package bank.view;
 
-import bank.service.UpdateCurrencyService;
+import bank.service.CurrencyService;
 import bank.utils.InputValidator;
 
-public class UpdateCurrencyView extends ViewAbstract{
+public class UpdateCurrencyView extends AbstractView {
 
     enum State {
-        BEGIN, MENU, ADD_FIATCURRENCY, GET_INFO, ADD_CRYPTOCURRENCY, REMOVE_CURRENCY,END,
+        BEGIN, MENU, ADD_FIAT_CURRENCY, GET_INFO, ADD_CRYPTOCURRENCY,
+        REMOVE_CURRENCY, END,
     };
+
     private State state = State.BEGIN;
-    private String warning;  
+    private String warning;
     private Integer entryOption;
 
-   private void getEntryOption() {
-      entryOption = InputValidator.getInteger();
+    private void getEntryOption() {
+        entryOption = InputValidator.getInteger();
 
-      if (entryOption == null) {
-         warning = "Opção inválida!";
-      }
-   }
+        if (entryOption == null) {
+            warning = "Opção inválida!";
+        }
+    }
 
     private void validateEntry() {
         if (entryOption == null) {
@@ -29,10 +31,10 @@ public class UpdateCurrencyView extends ViewAbstract{
 
         Integer i = 0;
 
-        if(++i == entryOption){
+        if (++i == entryOption) {
             state = State.ADD_CRYPTOCURRENCY;
         } else if (++i == entryOption) {
-            state = State.ADD_FIATCURRENCY;
+            state = State.ADD_FIAT_CURRENCY;
         } else if (++i == entryOption) {
             state = State.REMOVE_CURRENCY;
         } else {
@@ -51,9 +53,9 @@ public class UpdateCurrencyView extends ViewAbstract{
 
         System.out.println("\n0. Voltar");
         System.out.print("Selecione uma opção: ");
-    }  
+    }
 
-    private void addFiatCurrency(){
+    private void addFiatCurrency() {
         String name;
         String symbol;
         Double value;
@@ -63,18 +65,19 @@ public class UpdateCurrencyView extends ViewAbstract{
         symbol = InputValidator.getString();
         System.out.print("Digite o valor da moeda a ser adicionada: ");
         value = InputValidator.getDouble();
-        if(UpdateCurrencyService.addFiatCurrency(name, symbol, value)){
+        if (CurrencyService.addFiatCurrency(name, symbol, value)) {
             System.out.println("A moeda foi adicionada com sucesso!");
         } else {
-            System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");
+            System.out.println(
+                    "Não foi possível adicionar a moeda. Revise as informações e tente novamente.");
         }
     }
 
-    private void addCryptoCurrency(){
+    private void addCryptoCurrency() {
         String name;
         String symbol;
         Double value;
-        Integer supplyMaximum;
+        Double supplyMaximum;
         System.out.print("Digite o nome da criptomoeda a ser adicionada: ");
         name = InputValidator.getString();
         name = name.toLowerCase();
@@ -82,25 +85,30 @@ public class UpdateCurrencyView extends ViewAbstract{
         symbol = InputValidator.getString();
         System.out.print("Digite o valor da criptomoeda a ser adicionada: ");
         value = InputValidator.getDouble();
-        System.out.print("Digite o fornecimento máximo da criptomoeda a ser adicionada: ");
-        supplyMaximum = InputValidator.getInteger();
-        if (name == null || symbol == null || value == null || supplyMaximum == null){
-            System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");  
-        }
-        else if(UpdateCurrencyService.addCryptoCurrency(name, symbol, value, supplyMaximum)){
+        System.out.print(
+                "Digite o fornecimento máximo da criptomoeda a ser adicionada: ");
+        supplyMaximum = InputValidator.getDouble();
+        if (name == null || symbol == null || value == null
+                || supplyMaximum == null) {
+            System.out.println(
+                    "Não foi possível adicionar a moeda. Revise as informações e tente novamente.");
+        } else if (CurrencyService.addCryptoCurrency(name, symbol, value,
+                supplyMaximum)) {
             System.out.println("A moeda foi adicionada com sucesso!");
         } else {
-            System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");
+            System.out.println(
+                    "Não foi possível adicionar a moeda. Revise as informações e tente novamente.");
         }
     }
 
-    private void removeCurrency(){
+    private void removeCurrency() {
         String name;
         System.out.print("Digite o nome da moeda a ser removida: ");
         name = InputValidator.getString();
         name = name.toLowerCase();
-        if(UpdateCurrencyService.removeCurrency(name)){
-            System.out.println("A moeda " + name + " foi removida com sucesso.");
+        if (CurrencyService.removeCurrency(name)) {
+            System.out
+                    .println("A moeda " + name + " foi removida com sucesso.");
         } else {
             System.out.println("Não foi possível remover da moeda.");
         }
@@ -110,18 +118,19 @@ public class UpdateCurrencyView extends ViewAbstract{
     public void process() {
         warning = null;
         switch (state) {
-            case BEGIN:
-                break;
-            case MENU:
-                getEntryOption();
-                break;
-            case END:
-                break;
-            default:
-                break;
+        case BEGIN:
+            break;
+        case MENU:
+            getEntryOption();
+            break;
+        case END:
+            break;
+        default:
+            break;
         }
-        
+
     }
+
     @Override
     public void update() {
         if (warning != null) {
@@ -129,51 +138,53 @@ public class UpdateCurrencyView extends ViewAbstract{
             return;
         }
         switch (state) {
-            case BEGIN:
-                state = State.MENU;
-                break;
-            case MENU:
-                validateEntry();
-                break;
-            case ADD_FIATCURRENCY:
-                state = State.END;
-                break;
-            case ADD_CRYPTOCURRENCY:
-                state = State.END;
-                break;
-            case REMOVE_CURRENCY:
-                state = State.END;
-                break;
-            case END:
-                state = State.BEGIN;
-                break;
-            default:
-                break;
+        case BEGIN:
+            state = State.MENU;
+            break;
+        case MENU:
+            validateEntry();
+            break;
+        case ADD_FIAT_CURRENCY:
+            state = State.END;
+            break;
+        case ADD_CRYPTOCURRENCY:
+            state = State.END;
+            break;
+        case REMOVE_CURRENCY:
+            state = State.END;
+            break;
+        case END:
+            state = State.BEGIN;
+            break;
+        default:
+            break;
         }
     }
+
     @Override
     public void view() {
         switch (state) {
-            case MENU:
-                menu();
-                break;
-            case ADD_CRYPTOCURRENCY:
-                addCryptoCurrency();
-                break;
-            case ADD_FIATCURRENCY:
-                addFiatCurrency();
-                break;
-            case REMOVE_CURRENCY:
-                removeCurrency();
-                break;
-            case END:
-                break;
-            default:
-                break;
+        case MENU:
+            menu();
+            break;
+        case ADD_CRYPTOCURRENCY:
+            addCryptoCurrency();
+            break;
+        case ADD_FIAT_CURRENCY:
+            addFiatCurrency();
+            break;
+        case REMOVE_CURRENCY:
+            removeCurrency();
+            break;
+        case END:
+            break;
+        default:
+            break;
         }
     }
+
     @Override
     public Boolean exit() {
-      return state == State.END;
-    } 
+        return state == State.END;
+    }
 }

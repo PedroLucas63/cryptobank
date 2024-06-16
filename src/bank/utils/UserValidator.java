@@ -4,16 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UserValidator {
-   private static Boolean validateStringSize(String str, Integer min,
-         Integer max) {
-      return str != null && str.length() >= min && str.length() <= max;
-   }
-
    public static Boolean name(String name) {
       final Integer minLength = 3;
       final Integer maxLength = 16;
 
-      return validateStringSize(name, minLength, maxLength);
+      return StringValidator.size(name, minLength, maxLength);
    }
 
    public static Boolean document(String document) {
@@ -25,7 +20,7 @@ public class UserValidator {
       final Integer minLength = 8;
       final Integer maxLength = 24;
 
-      return validateStringSize(password, minLength, maxLength);
+      return StringValidator.size(password, minLength, maxLength);
    }
 
    public static Boolean age(Integer age) {
