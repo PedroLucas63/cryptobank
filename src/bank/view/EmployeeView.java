@@ -7,7 +7,7 @@ import bank.utils.InputValidator;
 
 public class EmployeeView extends ViewAbstract{
    enum State {
-      BEGIN, MENU, UPDATE_EMPLOYEE, GET_INFO, UPDATE_CAREER, UPDATE_CURRENCY, END,
+      BEGIN, MENU, UPDATE_EMPLOYEE, GET_INFO, GET_CURERNCYINFO, UPDATE_CAREER, UPDATE_CURRENCY, END,
    };
    private State state = State.BEGIN;
    private Integer entryOption;
@@ -34,6 +34,8 @@ public class EmployeeView extends ViewAbstract{
 
       if(++i == entryOption){
          state = State.GET_INFO;
+      } else if (++i == entryOption) {
+         state = State.GET_CURERNCYINFO;
       } else if (++i == entryOption && actualEmployee.getCareer().getUpdateCareers()) {
          state = State.UPDATE_CAREER;
       } else if (++i == entryOption && actualEmployee.getCareer().getUpdateCurrencies()) {
@@ -58,6 +60,7 @@ public class EmployeeView extends ViewAbstract{
       Employee actualEmployee = (Employee)AuthService.getUser();
 
       System.out.println(++i + ". Consultar informações de funcionários");
+      System.out.println(++i + ". Consultar informações de moedas");
       if (actualEmployee.getCareer().getUpdateCareers()) {
          System.out.println(++i + ". Administrar profissões");
       }
@@ -73,9 +76,15 @@ public class EmployeeView extends ViewAbstract{
    }
 
    private void getInfo(){
-         System.out.print("Digite o documento do funcionário que se deseja consultar: ");
-         String temp = InputValidator.getString();
-         EmployeeService.showEmployeeInfo(temp);
+      System.out.print("Digite o documento do funcionário que se deseja consultar: ");
+      String temp = InputValidator.getString();
+      EmployeeService.showEmployeeInfo(temp);
+   }
+
+   private void getCurrencyInfo(){
+      System.out.print("Digite o nome da moeda que se deseja consultar: ");
+      String temp = InputValidator.getString();
+      EmployeeService.showCurrencyInfo(temp);
    }
 
    @Override
@@ -92,6 +101,9 @@ public class EmployeeView extends ViewAbstract{
       case GET_INFO:
          getInfo();
          break;
+      case GET_CURERNCYINFO:
+         getCurrencyInfo();
+         break;
       case UPDATE_CURRENCY:
          updateCurrencyView.startView();
          break;
@@ -102,6 +114,11 @@ public class EmployeeView extends ViewAbstract{
 
    @Override
    public void update() {
+      if (warning != null) {
+         state = State.END;
+         return;
+      }
+
       switch (state) {
       case BEGIN:
          state = State.MENU;
@@ -110,12 +127,15 @@ public class EmployeeView extends ViewAbstract{
          validateEntry();
          break;
       case UPDATE_EMPLOYEE:
-         state = State.END;
+         state = State.BEGIN;
          break;
          case UPDATE_CURRENCY:
-         state = State.END;
+         state = State.BEGIN;
          break;
       case GET_INFO:
+         state = State.BEGIN;
+         break;
+      case GET_CURERNCYINFO:
          state = State.BEGIN;
          break;
       case END:

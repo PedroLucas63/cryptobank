@@ -1,13 +1,13 @@
 package bank.view;
 
-import bank.service.EmployeeService;
+import bank.service.UpdateCurrencyService;
 import bank.utils.InputValidator;
 
 public class UpdateCurrencyView extends ViewAbstract{
 
     enum State {
-        BEGIN, MENU, ADD_FIATCURRENCY, ADD_CRYPTOCURRENCY, REMOVE_CURRENCY,END,
-     };
+        BEGIN, MENU, ADD_FIATCURRENCY, GET_INFO, ADD_CRYPTOCURRENCY, REMOVE_CURRENCY,END,
+    };
     private State state = State.BEGIN;
     private String warning;  
     private Integer entryOption;
@@ -35,6 +35,8 @@ public class UpdateCurrencyView extends ViewAbstract{
             state = State.ADD_FIATCURRENCY;
         } else if (++i == entryOption) {
             state = State.REMOVE_CURRENCY;
+        } else {
+            warning = "Opção inválida!";
         }
     }
 
@@ -61,10 +63,46 @@ public class UpdateCurrencyView extends ViewAbstract{
         symbol = InputValidator.getString();
         System.out.print("Digite o valor da moeda a ser adicionada: ");
         value = InputValidator.getDouble();
-        if(EmployeeService.addFiatCurrency(name, symbol, value)){
+        if(UpdateCurrencyService.addFiatCurrency(name, symbol, value)){
             System.out.println("A moeda foi adicionada com sucesso!");
         } else {
             System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");
+        }
+    }
+
+    private void addCryptoCurrency(){
+        String name;
+        String symbol;
+        Double value;
+        Integer supplyMaximum;
+        System.out.print("Digite o nome da criptomoeda a ser adicionada: ");
+        name = InputValidator.getString();
+        name = name.toLowerCase();
+        System.out.print("Digite o símbolo da criptomoeda a ser adicionada: ");
+        symbol = InputValidator.getString();
+        System.out.print("Digite o valor da criptomoeda a ser adicionada: ");
+        value = InputValidator.getDouble();
+        System.out.print("Digite o fornecimento máximo da criptomoeda a ser adicionada: ");
+        supplyMaximum = InputValidator.getInteger();
+        if (name == null || symbol == null || value == null || supplyMaximum == null){
+            System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");  
+        }
+        else if(UpdateCurrencyService.addCryptoCurrency(name, symbol, value, supplyMaximum)){
+            System.out.println("A moeda foi adicionada com sucesso!");
+        } else {
+            System.out.println("Não foi possível adicionar a moede. Revise as informações e tente novamente.");
+        }
+    }
+
+    private void removeCurrency(){
+        String name;
+        System.out.print("Digite o nome da moeda a ser removida: ");
+        name = InputValidator.getString();
+        name = name.toLowerCase();
+        if(UpdateCurrencyService.removeCurrency(name)){
+            System.out.println("A moeda " + name + " foi removida com sucesso.");
+        } else {
+            System.out.println("Não foi possível remover da moeda.");
         }
     }
 
@@ -76,10 +114,6 @@ public class UpdateCurrencyView extends ViewAbstract{
                 break;
             case MENU:
                 getEntryOption();
-                break;
-            case ADD_CRYPTOCURRENCY:
-                break;
-            case REMOVE_CURRENCY:
                 break;
             case END:
                 break;
@@ -108,8 +142,10 @@ public class UpdateCurrencyView extends ViewAbstract{
                 state = State.END;
                 break;
             case REMOVE_CURRENCY:
+                state = State.END;
                 break;
             case END:
+                state = State.BEGIN;
                 break;
             default:
                 break;
@@ -122,11 +158,13 @@ public class UpdateCurrencyView extends ViewAbstract{
                 menu();
                 break;
             case ADD_CRYPTOCURRENCY:
+                addCryptoCurrency();
                 break;
             case ADD_FIATCURRENCY:
                 addFiatCurrency();
                 break;
             case REMOVE_CURRENCY:
+                removeCurrency();
                 break;
             case END:
                 break;

@@ -7,7 +7,7 @@ import bank.dao.CurrencyDAO;
 import bank.dao.UserDAO;
 import bank.entity.Career;
 import bank.entity.CryptoCurrency;
-
+import bank.entity.Currency;
 import bank.entity.Employee;
 import bank.entity.FiatCurrency;
 import bank.entity.User;
@@ -104,30 +104,34 @@ public class EmployeeService {
       }
     }
 
-    public static Boolean addFiatCurrency(String name, String symbol, Double value){
-      try {
-         if(symbol.length() > 4 || name.length() > 15 || value < 0){
-            return false;
-         }
-         FiatCurrency newCurrency = new FiatCurrency(name,symbol, value);
-         currencyDAO.save(newCurrency);
-         return true;
-      } catch (Exception e) {
-         return false;
-      }
-    }
+   public static void showCurrencyInfo(String name){
 
-    public static Boolean addCryptoCurrency(String name, String symbol, Double value, Integer suplyMaximum){
       try {
-         if(symbol.length() > 4 || name.length() > 15 || suplyMaximum < 0 || value < 0){
-            return false;
+         Optional<Currency> searchedCurrency = currencyDAO
+               .findById((long) name.hashCode());
+         if(!searchedCurrency.isPresent()){
+            System.out.println("A moeda informada não está registrada no sistema.");
          }
-         CryptoCurrency newCurrency = new CryptoCurrency(name,symbol, value, suplyMaximum);
-         currencyDAO.save(newCurrency);
-         return true;
+         else{
+               if(searchedCurrency.get() instanceof FiatCurrency){
+                  FiatCurrency currency = (FiatCurrency) searchedCurrency.get();
+                  System.out.println("Informações da moeda fiduciária '" + currency.getName() + "':");
+                  System.out.println("Símbolo -> " + currency.getSymbol());
+                  System.out.println("Valor atual -> " + currency.getValue());
+               } else {
+                  CryptoCurrency currency = (CryptoCurrency) searchedCurrency.get();
+                  System.out.println("Informações da criptomoeda '" + currency.getName() + "':");
+                  System.out.println("Símbolo -> " + currency.getSymbol());
+                  System.out.println("Moedas em uso em relação ao fornecimento total -> " + currency.getSupplyInUse());
+                  System.out.println("Fornecimento total -> " + currency.getSupplyMaximum());
+                  System.out.println("Valor atual -> " + currency.getValue());
+                  System.out.println("Valor original -> " + currency.getOriginalValue());
+               }
+         }  
       } catch (Exception e) {
-         return false;
+         System.out.println(e);
       }
-    }
+
+   }
 
 }
