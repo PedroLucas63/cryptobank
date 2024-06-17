@@ -16,6 +16,7 @@ public class AccountView extends AbstractView {
    private AbstractView depositView = new DepositView();
    private AbstractView withdrawnView = new WithdrawnView();
    private AbstractView buyAndSellView = new BuyAndSellView();
+   private AbstractView historyView = new HistoryView();
 
    private void getEntry() {
       entry = InputValidator.getInteger();
@@ -76,6 +77,9 @@ public class AccountView extends AbstractView {
       case BUY_AND_SELL:
          warning = buyAndSellView.getWarning();
          break;
+      case HISTORY:
+         warning = historyView.getWarning();
+         break;
       default:
          break;
       }
@@ -113,7 +117,10 @@ public class AccountView extends AbstractView {
          break;
       case BUY_AND_SELL:
          buyAndSellView.startView();
-
+         break;
+      case HISTORY:
+         historyView.startView();
+         break;
       default:
          break;
       }

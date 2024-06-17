@@ -38,6 +38,7 @@ public class CurrencyService {
                supplyMaximum)) {
             return false;
          }
+         
          CryptoCurrency newCurrency = new CryptoCurrency(name, symbol, value,
                supplyMaximum);
          currencyDAO.save(newCurrency);

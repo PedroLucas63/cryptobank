@@ -2,6 +2,8 @@ package bank.utils;
 
 import java.util.Scanner;
 import java.io.Console;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 public class InputValidator {
    private static Scanner scanner = new Scanner(System.in);
@@ -51,7 +53,7 @@ public class InputValidator {
          Float salary = Float.parseFloat(scanner.next());
 
          scanner.nextLine();
-         
+
          return salary;
       } catch (NumberFormatException e) {
          return null;
@@ -60,5 +62,18 @@ public class InputValidator {
 
    public static String getPassword() {
       return String.copyValueOf(console.readPassword());
+   }
+
+   public static LocalDateTime getLocalDateTime() {
+      try {
+         LocalDateTime datetime = LocalDateTime.parse(scanner.next());
+
+         scanner.nextLine();
+
+         return datetime;
+      } catch (DateTimeParseException e) {
+         return null;
+      }
+
    }
 }
