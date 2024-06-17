@@ -27,7 +27,7 @@ public class UpdateEmployeeView extends ViewAbstract{
       warning = "Essa carreira não está registrada.";
     }
     else{
-      System.out.println("A carreira do funcionário de documento '" + document + "' foi atualiazada com sucesso!");
+      System.out.println("A carreira do funcionário de documento '" + document + "' foi atualizada com sucesso!");
     }
   }
 

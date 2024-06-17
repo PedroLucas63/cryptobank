@@ -37,8 +37,8 @@ public class InputValidator {
    }
 
    public static String getCareer() {
-      String str = scanner.next();
-      return str.toLowerCase();
+      String str = scanner.nextLine();
+      return str.toUpperCase();
    }
 
    public static String getLine() {
@@ -60,5 +60,22 @@ public class InputValidator {
 
    public static String getPassword() {
       return String.copyValueOf(console.readPassword());
+   }
+
+   public static Boolean getYesOrNo(){
+      try {
+         String yesOrNo = scanner.next();
+         if(!yesOrNo.equalsIgnoreCase("y") && !yesOrNo.equalsIgnoreCase("n")){
+            System.out.print("Não foi possível validar a entrada (digite Y/N para responder).");
+            return null;
+         } else if (yesOrNo.equalsIgnoreCase("y")){
+            return true;
+         } else { 
+            return false;
+         }
+      } catch (Exception e) {
+         System.out.print(e);
+         return null;
+      }
    }
 }

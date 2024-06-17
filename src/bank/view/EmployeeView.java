@@ -13,6 +13,7 @@ public class EmployeeView extends ViewAbstract{
    private Integer entryOption;
    private View updateEmployeeView = new UpdateEmployeeView();
    private View updateCurrencyView = new UpdateCurrencyView();
+   private View updateCareerView = new UpdateCareerView();
    
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -107,6 +108,9 @@ public class EmployeeView extends ViewAbstract{
       case UPDATE_CURRENCY:
          updateCurrencyView.startView();
          break;
+      case UPDATE_CAREER:
+         updateCareerView.startView();
+         break;
       default:
          break;
       }
@@ -129,7 +133,10 @@ public class EmployeeView extends ViewAbstract{
       case UPDATE_EMPLOYEE:
          state = State.BEGIN;
          break;
-         case UPDATE_CURRENCY:
+      case UPDATE_CURRENCY:
+         state = State.BEGIN;
+         break;
+      case UPDATE_CAREER:
          state = State.BEGIN;
          break;
       case GET_INFO:

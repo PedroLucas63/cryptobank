@@ -25,12 +25,15 @@ public class App {
         UserService.create("Administrador", "123.567.890-11", "Admin123",
                 20, "admin@example.com");
         Career Administrator = new Career("Administrator", true, true, true);
+        Career Funcionário = new Career("Funcionário", false, false, false);
         CareerDAO careerDAO = new CareerDAO();
         try {
                 careerDAO.save(Administrator);
+                careerDAO.save(Funcionário);
         } catch (Exception e) {
                 System.out.println(e);
         }
         EmployeeService.create("123.567.890-11", Administrator, 20500.0F);
+        EmployeeService.create("123.456.789-10", Funcionário, 2500.0F);
     };
 }
