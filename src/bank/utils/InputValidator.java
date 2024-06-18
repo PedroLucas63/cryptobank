@@ -2,7 +2,8 @@ package bank.utils;
 
 import java.util.Scanner;
 import java.io.Console;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class InputValidator {
@@ -64,16 +65,15 @@ public class InputValidator {
       return String.copyValueOf(console.readPassword());
    }
 
-   public static LocalDateTime getLocalDateTime() {
+   public static LocalDate getLocalDate() {
       try {
-         LocalDateTime datetime = LocalDateTime.parse(scanner.next());
-
-         scanner.nextLine();
+         LocalDate datetime = LocalDate.parse(scanner.next(),
+               DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
          return datetime;
       } catch (DateTimeParseException e) {
+         System.out.println("ERROR NA DATA RECEBIDA!");
          return null;
       }
-
    }
 }

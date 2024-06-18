@@ -1,5 +1,6 @@
 package bank.view;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,8 +9,6 @@ import bank.entity.Transaction;
 import bank.service.HistoryService;
 import bank.utils.InputValidator;
 
-/// BUG: Duplicação nas transações.
-/// BUG: Erro na entrada do DateTime.
 public class HistoryView extends AbstractView {
    enum State {
       BEGIN, MENU, ALL, ENTRY_DATETIME, ALL_WITH_TIME, CREDIT, DEBIT, END
@@ -28,10 +27,13 @@ public class HistoryView extends AbstractView {
    }
 
    void getDateTime() {
-      startDate = InputValidator.getLocalDateTime();
+      LocalDate date = InputValidator.getLocalDate();
 
-      if (startDate == null) {
+      if (date == null) {
+         startDate = null;
          warning = "Data incorreta!";
+      } else {
+         startDate = date.atStartOfDay();
       }
    }
 
@@ -52,7 +54,7 @@ public class HistoryView extends AbstractView {
    }
 
    void validateDateTime() {
-      if (entryOption == null || startDate.isAfter(LocalDateTime.now())) {
+      if (startDate == null || startDate.isAfter(LocalDateTime.now())) {
          state = State.MENU;
       } else {
          state = State.ALL_WITH_TIME;
@@ -92,7 +94,7 @@ public class HistoryView extends AbstractView {
    }
 
    public void withMinimumDate() {
-      System.out.println("Transações até " + startDate + ": ");
+      System.out.println("Transações desde " + startDate + ": ");
       viewHistory(HistoryService.getAllWithMinimumDate(startDate));
    }
 

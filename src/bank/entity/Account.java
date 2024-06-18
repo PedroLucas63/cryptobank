@@ -18,8 +18,6 @@ public abstract class Account extends Entity {
 
       if (newAmount >= 0) {
          balances.put(currency, newAmount);
-         transactions.add(new Transaction(currency, -amount));
-
          return true;
       }
 
@@ -34,8 +32,6 @@ public abstract class Account extends Entity {
       Double newAmount = balances.getOrDefault(currency, 0.d) + amount;
 
       balances.put(currency, newAmount);
-      transactions.add(new Transaction(currency, amount));
-
       return true;
    }
 
