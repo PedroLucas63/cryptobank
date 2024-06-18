@@ -1,7 +1,11 @@
 package bank.view;
 
+import bank.entity.Account;
+import bank.entity.CurrentAccount;
+import bank.service.AccountService;
 import bank.service.BalancesService;
 import bank.utils.InputValidator;
+
 /// TODO: Visualizar números das contas.
 public class WalletView extends AbstractView {
    enum State {
@@ -37,7 +41,18 @@ public class WalletView extends AbstractView {
    private void menu() {
       title();
 
-      System.out.println("1 - Todas");
+      System.out.println();
+      for (Account account : AccountService.getAccounts()) {
+         if (account instanceof CurrentAccount) {
+            System.out.print("Conta corrente - ");
+         } else {
+            System.out.print("Conta cripto - ");
+         }
+
+         System.out.println(account.getId());
+      }
+
+      System.out.println("\n1 - Todas");
       System.out.println("2 - Fiduciárias");
       System.out.println("3 - Cripto");
       System.out.println("0 - Voltar");
