@@ -15,6 +15,7 @@ public class AccountView extends AbstractView {
    private AbstractView walletView = new WalletView();
    private AbstractView depositView = new DepositView();
    private AbstractView withdrawnView = new WithdrawnView();
+   private AbstractView transferView = new TransferView();
    private AbstractView buyAndSellView = new BuyAndSellView();
    private AbstractView historyView = new HistoryView();
 
@@ -74,6 +75,9 @@ public class AccountView extends AbstractView {
       case WITHDRAWN:
          warning = withdrawnView.getWarning();
          break;
+      case TRANSFER:
+         warning = transferView.getWarning();
+         break;
       case BUY_AND_SELL:
          warning = buyAndSellView.getWarning();
          break;
@@ -114,6 +118,9 @@ public class AccountView extends AbstractView {
          break;
       case WITHDRAWN:
          withdrawnView.startView();
+         break;
+      case TRANSFER:
+         transferView.startView();
          break;
       case BUY_AND_SELL:
          buyAndSellView.startView();
