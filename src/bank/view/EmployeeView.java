@@ -15,7 +15,8 @@ public class EmployeeView extends AbstractView {
    private Integer entryOption;
    private AbstractView updateEmployeeView = new UpdateEmployeeView();
    private AbstractView updateCurrencyView = new UpdateCurrencyView();
-
+   private AbstractView updateCareerView = new UpdateCareerView();
+   
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
 
@@ -47,8 +48,6 @@ public class EmployeeView extends AbstractView {
       } else if (++i == entryOption
             && actualEmployee.getCareer().getUpdateEmployees()) {
          state = State.UPDATE_EMPLOYEE;
-      } else {
-         warning = "O funcionário em questão não possui permissões cadastradas no sistema.";
       }
    }
 
@@ -74,6 +73,10 @@ public class EmployeeView extends AbstractView {
       }
       if (actualEmployee.getCareer().getUpdateEmployees()) {
          System.out.println(++i + ". Administrar funcionários");
+      }
+      if (!(actualEmployee.getCareer().getUpdateCareers()) && !(actualEmployee.getCareer().getUpdateCurrencies())
+          && !(actualEmployee.getCareer().getUpdateEmployees())) {
+         warning = "O funcionário em questão não possui permissões cadastradas no sistema.";
       }
 
       System.out.println("\n0. Voltar");
@@ -113,6 +116,9 @@ public class EmployeeView extends AbstractView {
       case UPDATE_CURRENCY:
          updateCurrencyView.startView();
          break;
+      case UPDATE_CAREER:
+         updateCareerView.startView();
+         break;
       default:
          break;
       }
@@ -136,6 +142,9 @@ public class EmployeeView extends AbstractView {
          state = State.BEGIN;
          break;
       case UPDATE_CURRENCY:
+         state = State.BEGIN;
+         break;
+      case UPDATE_CAREER:
          state = State.BEGIN;
          break;
       case GET_INFO:

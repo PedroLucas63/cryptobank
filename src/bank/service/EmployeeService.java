@@ -56,7 +56,7 @@ public class EmployeeService {
     public static Boolean searchCareer(String title){
       try {
          Optional<Career> searchedCareer = careerDAO.findById((long) title.hashCode());
-         if(!searchedCareer.isPresent() || !(searchedCareer.get() instanceof Career)){
+         if(!searchedCareer.isPresent()){
             return false;
          }
          else{
@@ -96,7 +96,7 @@ public class EmployeeService {
             Employee employee = (Employee) searchedUser.get();
             System.out.println("Informações do funcionário de documento '" + employee.getDocument() + "':");
             System.out.println("Nome -> " + employee.getName());
-            System.out.println("Carreira atual -> " + employee.getCareer().getTitle());
+            System.out.println("Carreira atual -> " + employee.getCareer().getTitle().toUpperCase());
             System.out.println("Salário atual -> " + employee.getSalary());
          }  
       } catch (Exception e) {
