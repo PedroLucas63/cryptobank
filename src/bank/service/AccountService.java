@@ -17,6 +17,7 @@ public class AccountService {
    private static Long getNewAccountId() {
       User loggedUser = AuthService.getUser();
       Long userId = loggedUser.getId();
+
       Integer amountAccount = loggedUser.getAccounts().size();
 
       String accountId = userId
@@ -57,26 +58,26 @@ public class AccountService {
          accountId = getNewAccountId(receiver.get(), 0);
          return accountId;
       } catch (Exception e) {
-         System.out.print(e.getMessage() + "A conta especificada não foi encontrada. ");
+         System.out.print(
+               e.getMessage() + "A conta especificada não foi encontrada. ");
          return null;
       }
    }
 
-    public static Boolean validUser(String document){
+   public static Boolean validUser(String document) {
       document = DocumentTransformer.transform(document);
       try {
          Optional<User> searchedUser = userDAO
                .findById((long) document.hashCode());
-         if(!searchedUser.isPresent()){
+         if (!searchedUser.isPresent()) {
             return false;
-         }
-         else{
+         } else {
             return true;
-         }  
+         }
       } catch (Exception e) {
          return false;
       }
-    }
+   }
 
    public static void createCurrentAccount() {
       createAccount(CurrentAccount.class);
@@ -92,5 +93,13 @@ public class AccountService {
 
    public static List<Account> getAccounts() {
       return AuthService.getUser().getAccounts();
+   }
+
+   public static Long getUserByAccount(Long accountId) {
+      return (accountId / (long) Math.pow(10, accountDigits));
+   }
+
+   public static Long getAccountIndexByAccount(Long userId, Long accountId) {
+      return accountId - (userId * (long) Math.pow(10, accountDigits));
    }
 }

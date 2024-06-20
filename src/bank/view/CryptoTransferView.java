@@ -4,14 +4,13 @@ import java.util.Map;
 
 import bank.entity.Currency;
 import bank.service.BalancesService;
+import bank.service.CryptoTransferService;
 import bank.utils.DocumentValidator;
 import bank.utils.InputValidator;
 
-/// TODO: Atualizar dados.
 public class CryptoTransferView extends AbstractView {
    enum State {
-      BEGIN, MENU, ENTRY_ACCOUNT, ENTRY_CURRENCY, ENTRY_AMOUNT, EXECUTE,
-      END,
+      BEGIN, MENU, ENTRY_ACCOUNT, ENTRY_CURRENCY, ENTRY_AMOUNT, EXECUTE, END,
    };
 
    private State state = State.BEGIN;
@@ -34,10 +33,7 @@ public class CryptoTransferView extends AbstractView {
       accountEntry = InputValidator.getString();
 
       if (accountEntry == null) {
-         warning = "Informe um CPF não nulo!";
-      } else if (!DocumentValidator.isValidCPF(accountEntry)
-            && !DocumentValidator.isValidCNPJ(accountEntry)) {
-         warning = "CPF inválido!";
+         warning = "Informe um número de conta não nulo!";
       }
    }
 
@@ -51,8 +47,8 @@ public class CryptoTransferView extends AbstractView {
 
       Integer i = 0;
 
-      for (Map.Entry<Currency, Double> entry : BalancesService.getFiatBalances()
-            .entrySet()) {
+      for (Map.Entry<Currency, Double> entry : BalancesService
+            .getCryptoBalances().entrySet()) {
          if (++i == currencyEntry) {
             currency = entry.getKey();
             maxAmount = entry.getValue();
@@ -70,9 +66,10 @@ public class CryptoTransferView extends AbstractView {
    }
 
    private void executeTransfer() {
-      // if (!CryptoTransferService.transfer(documentEntry, currency, amountEntry)) {
-      // warning = "Transferência não concluída, verifique a chave!";
-      // }
+      if (!CryptoTransferService.transfer(accountEntry, currency,
+            amountEntry)) {
+         warning = "Transferência não concluída, verifique o número da conta!";
+      }
    }
 
    private void validateEntry() {
@@ -98,8 +95,8 @@ public class CryptoTransferView extends AbstractView {
    private void availableCurrencies() {
       Integer i = 0;
 
-      for (Map.Entry<Currency, Double> entry : BalancesService.getCryptoBalances()
-            .entrySet()) {
+      for (Map.Entry<Currency, Double> entry : BalancesService
+            .getCryptoBalances().entrySet()) {
          Currency currency = entry.getKey();
          Double amount = entry.getValue();
 
@@ -119,7 +116,7 @@ public class CryptoTransferView extends AbstractView {
          getEntryOption();
          break;
       case ENTRY_ACCOUNT:
-      getAccountKey();
+         getAccountKey();
          break;
       case ENTRY_CURRENCY:
          getCurrencyEntry();

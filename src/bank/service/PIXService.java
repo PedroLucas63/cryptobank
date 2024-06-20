@@ -3,40 +3,40 @@ package bank.service;
 import bank.dao.UserDAO;
 import bank.entity.Account;
 import bank.entity.Currency;
+import bank.entity.CurrentAccount;
+
 import java.util.Optional;
 import bank.entity.User;
+import bank.utils.DocumentTransformer;
 
 public class PIXService {
+    private static UserDAO userDAO = new UserDAO();
 
-private static UserDAO userDAO = new UserDAO();
+    public static Boolean transfer(String entryDocument, Currency currencyEntry,
+            Double amountEntry) {
+        try {
+            entryDocument = DocumentTransformer.transform(entryDocument);
+            Optional<User> receiver = userDAO
+                    .findById((long) entryDocument.hashCode());
 
-private static void debit(Currency currencyEntry, Double amountEntry){
-    Long accountId = AccountService.getCurrentAccountId(AuthService.getUser().getDocument());
-    for(Account account: AuthService.getUser().getAccounts()){
-        if(account.getId().equals(accountId)){
-            account.debit(currencyEntry, amountEntry);
-        }
-    }
-}
-
-public static Boolean transfer(String entryDocument, Currency currencyEntry, Double amountEntry){
-    try {
-        Optional<User> receiver = userDAO.findById((long) entryDocument.hashCode());
-        for(Account account : receiver.get().getAccounts()){
-            if(account.getId().equals(AccountService.getCurrentAccountId(entryDocument))){
-                account.credit(currencyEntry, amountEntry);
-                debit(currencyEntry, amountEntry);
-                account.addTransaction(currencyEntry, amountEntry);
-                AccountService.getCurrentAccountId(AuthService.getUser().getDocument());
-                return true;
+            if (!receiver.isPresent()) {
+                return false;
             }
-        }
-        System.out.print("Não foi encontrada uma conta relacionada a esse usuário. ");
-        return false;
-    } catch (Exception e) {
-        System.out.println("Erro: " + e.getMessage() + ". Não foi possível realizar depositar o valor na conta. ");
-        return false;
-    }
-}
 
+            for (Account receiverAccount : receiver.get().getAccounts()) {
+                if (receiverAccount instanceof CurrentAccount) {
+                    receiverAccount.credit(currencyEntry, amountEntry);
+                    receiverAccount.addTransaction(currencyEntry, amountEntry);
+
+                    BalancesService.updateFiatBalance(currencyEntry,
+                            -amountEntry);
+                    userDAO.update(receiver.get().getId(), receiver.get());
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
