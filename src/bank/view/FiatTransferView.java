@@ -3,11 +3,11 @@ package bank.view;
 import java.util.Map;
 
 import bank.entity.Currency;
+import bank.service.AccountService;
 import bank.service.BalancesService;
-import bank.utils.DocumentValidator;
+import bank.service.PIXService;
 import bank.utils.InputValidator;
 
-/// TODO: Adicionar PIXService.
 public class FiatTransferView extends AbstractView {
    enum State {
       BEGIN, MENU, ENTRY_DOCUMENT, ENTRY_CURRENCY, ENTRY_AMOUNT, EXECUTE_PIX,
@@ -35,16 +35,20 @@ public class FiatTransferView extends AbstractView {
 
       if (entryDocument == null) {
          warning = "Informe um CPF não nulo!";
-      } else if (!DocumentValidator.isValidCPF(entryDocument)
-            && !DocumentValidator.isValidCNPJ(entryDocument)) {
-         warning = "CPF inválido!";
-      }
+      } else if (!AccountService.validUser(entryDocument)) {
+         warning = "O usuário não foi encontrado.";
+      } 
    }
 
    private void getCurrencyEntry() {
       currencyEntry = InputValidator.getInteger();
 
       if (currencyEntry == null) {
+         warning = "Opção inválida!";
+         return;
+      }
+
+      if(currencyEntry > BalancesService.getFiatBalances().size()){
          warning = "Opção inválida!";
          return;
       }
@@ -70,9 +74,11 @@ public class FiatTransferView extends AbstractView {
    }
 
    private void executePix() {
-      // if (!PIXService.transfer(documentEntry, currency, amountEntry)) {
-      // warning = "Transferência não concluída, verifique a chave!";
-      // }
+      if (!PIXService.transfer(entryDocument, currency, amountEntry)) {
+         warning = "Transferência não concluída, verifique a chave!";
+      } else{
+         System.out.println("Transferência concluída com êxito!");
+      }
    }
 
    private void validateEntry() {

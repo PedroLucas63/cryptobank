@@ -6,7 +6,6 @@ import bank.service.AccountService;
 import bank.service.BalancesService;
 import bank.utils.InputValidator;
 
-/// TODO: Visualizar números das contas.
 public class WalletView extends AbstractView {
    enum State {
       BEGIN, MENU, VIEW_ALL, VIEW_FIAT, VIEW_CRYPTO, END
