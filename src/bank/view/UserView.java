@@ -15,6 +15,7 @@ public class UserView extends AbstractView {
    private Integer entryOption;
 
    private AbstractView accountView = new AccountView();
+   private AbstractView employeeView = new EmployeeView();
 
    private void getEntryOption() {
       entryOption = InputValidator.getInteger();
@@ -86,6 +87,9 @@ public class UserView extends AbstractView {
       case ACCOUNTS_VIEW:
          warning = accountView.getWarning();
          break;
+      case EMPLOYEE_VIEW:
+         warning = employeeView.getWarning();
+         break;
       case LOGOUT:
          AuthService.logout();
          warning = "Saída com sucesso!";
@@ -129,6 +133,9 @@ public class UserView extends AbstractView {
          break;
       case ACCOUNTS_VIEW:
          accountView.startView();
+         break;
+      case EMPLOYEE_VIEW:
+         employeeView.startView();
          break;
       default:
          break;

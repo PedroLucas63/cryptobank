@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 public class InputValidator {
    private static Scanner scanner = new Scanner(System.in);
    private static Console console = System.console();
+   private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
    public static Integer getInteger() {
       try {
@@ -40,8 +41,8 @@ public class InputValidator {
    }
 
    public static String getCareer() {
-      String str = scanner.next();
-      return str.toLowerCase();
+      String str = scanner.nextLine();
+      return str.toUpperCase();
    }
 
    public static String getLine() {
@@ -65,15 +66,39 @@ public class InputValidator {
       return String.copyValueOf(console.readPassword());
    }
 
-   public static LocalDate getLocalDate() {
-      try {
-         LocalDate datetime = LocalDate.parse(scanner.next(),
-               DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    public static LocalDate getLocalDate() {
+        LocalDate datetime = null;
+        boolean validDate = false;
 
-         return datetime;
-      } catch (DateTimeParseException e) {
-         System.out.println("ERROR NA DATA RECEBIDA!");
+        while (!validDate) {
+            try {
+                System.out.print("Digite a data (dd/MM/yyyy): ");
+                String input = scanner.nextLine();
+                datetime = LocalDate.parse(input, formatter);
+                validDate = true;
+            } catch (DateTimeParseException e) {
+                System.out.println("ERROR NA DATA RECEBIDA! Por favor, tente novamente.");
+            }
+        }
+
+        return datetime;
+    }
+
+   public static Boolean getYesOrNo(){
+      try {
+         String yesOrNo = scanner.next();
+         if(!yesOrNo.equalsIgnoreCase("y") && !yesOrNo.equalsIgnoreCase("n")){
+            System.out.print("Não foi possível validar a entrada (digite Y/N para responder).");
+            return null;
+         } else if (yesOrNo.equalsIgnoreCase("y")){
+            return true;
+         } else { 
+            return false;
+         }
+      } catch (Exception e) {
+         System.out.print(e);
          return null;
       }
    }
+
 }

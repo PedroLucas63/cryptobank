@@ -48,7 +48,7 @@ public class Career extends Entity {
 
    @Override
    public int hashCode() {
-      return title.hashCode();
+      return title.toUpperCase().hashCode();
    }
 
    @Override

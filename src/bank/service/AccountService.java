@@ -1,14 +1,18 @@
 package bank.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import bank.dao.UserDAO;
 import bank.entity.Account;
 import bank.entity.CryptoAccount;
 import bank.entity.CurrentAccount;
 import bank.entity.User;
+import bank.utils.DocumentTransformer;
 
 public class AccountService {
    private static final Integer accountDigits = 4;
+   private static UserDAO userDAO = new UserDAO();
 
    private static Long getNewAccountId() {
       User loggedUser = AuthService.getUser();
@@ -17,6 +21,15 @@ public class AccountService {
 
       String accountId = userId
             + String.format("%0" + accountDigits + "d", amountAccount);
+
+      return Long.parseLong(accountId);
+   }
+
+   private static Long getNewAccountId(User user, Integer accountNumber) {
+      Long userId = user.getId();
+
+      String accountId = userId
+            + String.format("%0" + accountDigits + "d", accountNumber);
 
       return Long.parseLong(accountId);
    }
@@ -35,6 +48,35 @@ public class AccountService {
          System.out.println(e.getMessage());
       }
    }
+
+   public static Long getCurrentAccountId(String userDocument) {
+      Long userId = (long) userDocument.hashCode();
+      Long accountId = 0L;
+      try {
+         Optional<User> receiver = userDAO.findById(userId);
+         accountId = getNewAccountId(receiver.get(), 0);
+         return accountId;
+      } catch (Exception e) {
+         System.out.print(e.getMessage() + "A conta especificada não foi encontrada. ");
+         return null;
+      }
+   }
+
+    public static Boolean validUser(String document){
+      document = DocumentTransformer.transform(document);
+      try {
+         Optional<User> searchedUser = userDAO
+               .findById((long) document.hashCode());
+         if(!searchedUser.isPresent()){
+            return false;
+         }
+         else{
+            return true;
+         }  
+      } catch (Exception e) {
+         return false;
+      }
+    }
 
    public static void createCurrentAccount() {
       createAccount(CurrentAccount.class);
