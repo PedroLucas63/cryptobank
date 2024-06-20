@@ -21,7 +21,10 @@ public class HistoryService {
          transactions.addAll(filteredTransactions.collect(Collectors.toList()));
       }
 
-      return transactions;
+      Stream<Transaction> sorted = transactions.stream().sorted(
+            (tx1, tx2) -> tx1.getTimestamp().compareTo(tx2.getTimestamp()));
+
+      return sorted.collect(Collectors.toList());
    }
 
    public static List<Transaction> getAll() {
