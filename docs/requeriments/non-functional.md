@@ -20,7 +20,7 @@ O sistema deve garantir a proteção dos dados dos usuários e das transações 
 
 **Funcionalidades:**
 
-- RNF001: Todas as senhas devem ser armazenadas de forma criptografada.
+- RNF001: Todas as senhas devem ser armazenadas de forma criptografada. (Cancelado por incompatibilidade.)
 - RNF002: O sistema deve implementar autenticação robusta para acesso de usuários e funcionários.
 - RNF003: Todas as transações financeiras devem ser seguras, utilizando protocolos de segurança adequados.
 - RNF004: O sistema deve proteger contra fraudes e acessos não autorizados.

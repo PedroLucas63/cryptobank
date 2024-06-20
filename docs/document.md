@@ -48,38 +48,11 @@ O projeto é um sistema bancário digital que oferece suporte tanto para moedas 
 
 ![Diagrama de Pacotes](diagrams/packages.png)
 
-### Diagrama de Classes do Pacote Entidade
+### Diagrama de Classes
 
-#### Diagrama de Hierarquia
-
-![Diagrama de Hierarquia do Pacote Entidade](diagrams/entity-hierarchy.png)
-
-#### Diagrama de Relação
-
-![Diagrama de Relação do Pacote Entidade](diagrams/entity-relation.png)
-
-### Diagrama de Classes do Pacote Exception
-
-![Diagrama de Classes do Pacote Exception](diagrams/exception.png)
-
-### Diagrama de Classes do Pacote Database
-
-![Diagrama de Classes do Pacote Database](diagrams/database.png)
-
-### Diagrama de Classes do Pacote DAO
-
-![Diagrama de Classes do Pacote DAO](diagrams/dao.png)
-
-### Diagrama Geral de Classes
-
-[Clique aqui!](requeriments/functional.md)
+Disponível no arquivo: diagrams/diagram.drawio
 
 ## Status dos Pacotes Service e View
-
-Os diagramas dos pacotes Service e View ainda estão em fase de construção. Estes pacotes são essenciais para a implementação da lógica de negócios e da interface de usuário do sistema.
-
-- **Pacote Service**: Contém a lógica de negócios e os serviços que coordenam a operação entre o DAO e a View.
-- **Pacote View**: Responsável pela interação com o usuário.
 
 Os diagramas desses pacotes serão incluídos em versões futuras do documento assim que estiverem completos.
 

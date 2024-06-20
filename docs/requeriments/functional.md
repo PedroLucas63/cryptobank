@@ -19,14 +19,14 @@ O sistema deve permitir que novos usuários se cadastrem fornecendo as seguintes
 
 - Nome
 - Documento (com validação)
-- Senha (criptografada)
+- Senha
 - Idade (mínimo 16 anos)
 - E-mail
 
 **Funcionalidades:**
 
 - RF001: O sistema deve validar o documento do usuário durante o cadastro.
-- RF002: O sistema deve garantir que a senha do usuário seja armazenada de forma criptografada.
+- RF002: O sistema deve garantir que a senha do usuário seja armazenada de forma criptografada. (Cancelado por motivos de compatibilidade.)
 - RF003: O sistema deve garantir que a idade do usuário seja de no mínimo 16 anos.
 
 ##### 2. Login de Usuário
@@ -71,7 +71,7 @@ O sistema deve permitir transferências de dinheiro entre contas do mesmo banco.
 **Funcionalidades:**
 
 - RF012: O sistema deve permitir transferências instantâneas (PIX) entre contas.
-- RF013: O sistema deve permitir transferências utilizando cartão de débito.
+- RF013: O sistema deve permitir transferências utilizando cartão de débito. (Cancelado por questão do tempo.)
 - RF014: O sistema deve permitir transferências de criptomoedas entre carteiras.
 
 ##### 6. Conversão de Moedas
@@ -109,7 +109,7 @@ O sistema deve permitir o cadastro e a gestão de funcionários do banco.
 
 - RF022: O sistema deve permitir que funcionários com permissão possam cadastrar novos cargos.
 - RF023: O sistema deve permitir que funcionários com permissão possam cadastrar novos funcionários.
-- RF024: O sistema deve permitir o cadastro de funcionários com ou sem conta no sistema.
+- RF024: O sistema deve permitir o cadastro de funcionários com conta no sistema.
 
 ##### 9. Cadastro e Atualização de Moedas
 
