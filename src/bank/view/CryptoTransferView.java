@@ -5,7 +5,6 @@ import java.util.Map;
 import bank.entity.Currency;
 import bank.service.BalancesService;
 import bank.service.CryptoTransferService;
-import bank.utils.DocumentValidator;
 import bank.utils.InputValidator;
 
 public class CryptoTransferView extends AbstractView {
